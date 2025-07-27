@@ -14,8 +14,10 @@ This project shows how to use **React** components (built as Web Components) ins
 ## Local Development
 
 ```bash
-docker-compose up --build
+docker compose up --build
 ```
+
+Then go to [http://localhost:8083/hello.php](http://localhost:8083/hello.php) to see the example in action.
 
 ## Usage Example
   
