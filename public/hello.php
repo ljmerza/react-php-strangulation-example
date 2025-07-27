@@ -14,6 +14,7 @@
 
 <br><br>
 <hello-widget id="hello" data-props='{"name": "Leo"}'></hello-widget>
+<another-widget/>
 
 <script>
   const widget = document.getElementById('hello');

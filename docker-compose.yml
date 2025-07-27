@@ -3,8 +3,3 @@ services:
     build: .
     ports:
       - "8083:80"
-    volumes:
-      # For hot-reload of PHP files (optional, dev only)
-      - ./public:/var/www/html
-      # For hot-reload of built React files (optional, dev only)
-      - ./public/dist:/var/www/html/dist
