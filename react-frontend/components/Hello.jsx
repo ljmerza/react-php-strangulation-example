@@ -16,7 +16,7 @@ export default function Hello({ name = "World", onInputChange }) {
   };
 
   return (
-    <div>
+    <div className="hello-component">
       <h3>Hello from React, {value}!</h3>
       <input value={value} onChange={handleChange} />
     </div>

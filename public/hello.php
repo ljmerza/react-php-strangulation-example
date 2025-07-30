@@ -3,6 +3,7 @@
 <head>
   <title>Hello Widget</title>
   <script type="module" src="dist/main.js"></script>
+  <script type="module" src="dist/parent.js"></script>
 </head>
 <body>
 
@@ -14,7 +15,7 @@
 
 <br><br>
 <hello-widget id="hello" data-props='{"name": "Leo"}'></hello-widget>
-<another-widget/>
+<parent-widget></parent-widget>
 
 <script>
   const widget = document.getElementById('hello');

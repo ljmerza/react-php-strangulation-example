@@ -7,11 +7,18 @@ export default defineConfig({
   plugins: [react()],
   define: { 'process.env.NODE_ENV': '"production"' },
   build: {
-    lib: {
-      entry: path.resolve(__dirname, 'index.js'),
-      formats: ['iife'],
-      name: 'MyComponents',
-      fileName: () => 'main.js',
+    rollupOptions: {
+      input: {
+        hello: path.resolve(__dirname, 'hello.js'),
+        parent: path.resolve(__dirname, 'parent.js'),
+        all: path.resolve(__dirname, 'all.js'),
+        main: path.resolve(__dirname, 'index.js'), // Keep for backward compatibility
+      },
+      output: {
+        entryFileNames: '[name].js',
+        format: 'es',
+        dir: path.resolve(__dirname, '../public/dist'),
+      },
     },
     outDir: path.resolve(__dirname, '../public/dist'),
     emptyOutDir: true,

@@ -1,4 +1,5 @@
 import { createRoot } from 'react-dom/client';
+import cssText from './components.css?inline';
 
 export function registerReactComponent(tagName, Component) {
   class ReactCustomElement extends HTMLElement {
@@ -17,6 +18,11 @@ export function registerReactComponent(tagName, Component) {
       if (!this.shadowRoot) {
         // Isolate component in a shadow DOM but allow parent js to modify
         this.attachShadow({ mode: 'open' });
+        
+        // Inject CSS into shadow DOM
+        const style = document.createElement('style');
+        style.textContent = cssText;
+        this.shadowRoot.appendChild(style);
       }
       if (!this._root) {
         this._root = createRoot(this.shadowRoot);
