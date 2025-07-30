@@ -1,0 +1,1 @@
+import{a as l,j as t}from"./index-BBhl4CI8.js";function h({name:e="World",onInputChange:n}){const[s,o]=l.useState(e);l.useEffect(()=>{o(e)},[e]);const r=c=>{const a=c.target.value;o(a),n?.(a)};return t.jsxs("div",{className:"hello-component",children:[t.jsxs("h3",{children:["Hello from React, ",s,"!"]}),t.jsx("input",{value:s,onChange:r})]})}export{h as H};
