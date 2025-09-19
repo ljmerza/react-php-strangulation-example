@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "components": {
     "hello-widget": {
-      "path": "./assets/Hello-cPe77Bd4.js",
+      "path": "./components/Hello.jsx",
       "version": "1.0.0",
       "dependencies": ["react", "react-dom"],
       "description": "Simple hello component with input",
@@ -13,7 +13,7 @@
       }
     },
     "parent-widget": {
-      "path": "./assets/Parent-0kieMew3.js",
+      "path": "./components/Parent.jsx",
       "version": "1.2.0",
       "dependencies": ["react", "react-dom"],
       "description": "Parent component containing child components",
@@ -21,7 +21,7 @@
       "props": {}
     },
     "form-composer": {
-      "path": "./assets/FormComposer-DlhkXZUF.js",
+      "path": "./components/FormComposer.jsx",
       "version": "1.0.0",
       "dependencies": ["react", "react-dom"],
       "description": "Dynamic form builder with validation and field composition",
@@ -39,7 +39,7 @@
       "features": ["validation", "dynamic-fields", "form-state"]
     },
     "card-widget": {
-      "path": "./assets/Card-DYfC9pIH.js",
+      "path": "./components/Card.jsx",
       "version": "1.0.0",
       "dependencies": ["react", "react-dom"],
       "description": "Flexible card layout with header, body, and footer sections",
@@ -57,7 +57,7 @@
       "features": ["flexible-layout", "customizable-sections"]
     },
     "data-table": {
-      "path": "./assets/DataTable-BRE1Wqwc.js",
+      "path": "./components/DataTable.jsx",
       "version": "1.0.0",
       "dependencies": ["react", "react-dom"],
       "description": "Advanced data table with sorting, pagination, and custom rendering",
@@ -75,7 +75,7 @@
       "features": ["sorting", "pagination", "custom-rendering", "row-interaction"]
     },
     "php-composable-card": {
-      "path": "./assets/PHPComposableCard-D0j_fb6l.js",
+      "path": "./components/PHPComposableCard.jsx",
       "version": "1.0.0",
       "dependencies": ["react", "react-dom"],
       "description": "PHP-friendly composable card that processes nested web components",
