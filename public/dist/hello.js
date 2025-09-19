@@ -1,1 +1,1 @@
-import{r as o}from"./assets/index-BBhl4CI8.js";import{H as e}from"./assets/Hello-DKGO3w8y.js";o("hello-widget",e);
+import{r as o}from"./assets/registerReactComponent-WbUqackn.js";/* empty css                          */import r from"./assets/Hello-cPe77Bd4.js";import"./assets/index-8FW48s7X.js";o("hello-widget",r);

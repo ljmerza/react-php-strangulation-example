@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Debug</title>
+</head>
+<body>
+    <h1>Simple Debug</h1>
+    <div id="output">Loading...</div>
+
+    <script>
+        const output = document.getElementById('output');
+        output.innerHTML = 'JavaScript is working!';
+
+        // Try to load the discovery script
+        const script = document.createElement('script');
+        script.type = 'module';
+        script.src = './dist/discover.js';
+
+        script.onload = function() {
+            output.innerHTML += '<br>✅ Discovery script loaded successfully!';
+
+            setTimeout(() => {
+                if (window.componentDiscovery) {
+                    output.innerHTML += '<br>✅ window.componentDiscovery is available!';
+                    try {
+                        const available = window.componentDiscovery.listAvailable();
+                        output.innerHTML += '<br>Components: ' + available.length + ' found';
+                        output.innerHTML += '<br>List: ' + available.join(', ');
+
+                        const stats = window.componentDiscovery.getStats();
+                        output.innerHTML += '<br>Stats: ' + JSON.stringify(stats, null, 2);
+                    } catch (e) {
+                        output.innerHTML += '<br>Error getting components: ' + e.message;
+                    }
+                } else {
+                    output.innerHTML += '<br>❌ window.componentDiscovery is NOT available';
+                }
+            }, 2000);
+        };
+
+        script.onerror = function(error) {
+            output.innerHTML += '<br>❌ Error loading discovery script: ' + error;
+        };
+
+        document.head.appendChild(script);
+    </script>
+</body>
+</html>

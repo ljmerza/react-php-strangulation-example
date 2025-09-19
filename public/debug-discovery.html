@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Discovery System</title>
+</head>
+<body>
+    <h1>Debug Discovery System</h1>
+
+    <div id="debug-output" style="background: #f0f0f0; padding: 20px; font-family: monospace; white-space: pre-wrap;">
+        Loading...
+    </div>
+
+    <script type="module">
+        const debugDiv = document.getElementById('debug-output');
+
+        function log(message) {
+            debugDiv.textContent += message + '\n';
+        }
+
+        log('1. Starting debug...');
+
+        // Override console.log to capture all messages
+        const originalLog = console.log;
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            debugDiv.textContent += 'CONSOLE: ' + args.join(' ') + '\n';
+        };
+
+        const originalError = console.error;
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            debugDiv.textContent += 'ERROR: ' + args.join(' ') + '\n';
+        };
+
+        const originalWarn = console.warn;
+        console.warn = function(...args) {
+            originalWarn.apply(console, args);
+            debugDiv.textContent += 'WARN: ' + args.join(' ') + '\n';
+        };
+
+        log('2. Loading discovery script...');
+
+        try {
+            await import('./dist/discover.js');
+            log('3. Discovery script loaded');
+
+            setTimeout(() => {
+                if (window.componentDiscovery) {
+                    log('4. ✅ window.componentDiscovery is available!');
+                    log('5. Available components: ' + window.componentDiscovery.listAvailable().join(', '));
+                    log('6. Stats: ' + JSON.stringify(window.componentDiscovery.getStats(), null, 2));
+                } else {
+                    log('4. ❌ window.componentDiscovery is NOT available');
+                    log('5. Window keys: ' + Object.keys(window).filter(k => k.includes('component')).join(', '));
+                }
+            }, 2000);
+
+        } catch (error) {
+            log('3. ❌ Error loading discovery: ' + error.message);
+            log('   Stack: ' + error.stack);
+        }
+    </script>
+</body>
+</html>
