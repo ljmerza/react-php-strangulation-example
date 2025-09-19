@@ -1,16 +1,18 @@
 # React + PHP Strangulation Example
 
-This project shows how to use **React** components (built as Web Components) inside legacy **PHP** pages with **two-way data binding** between PHP and React for legacy frontend strangulation.
+This project demonstrates how to use **React** components (built as Web Components) inside legacy **PHP** pages with **intelligent component discovery** and **two-way data binding** for modern frontend strangulation.
 
 ## ✨ Features
 
 ### Core Features
-- React components exported as custom web components (`<hello-widget>`)
+- React components exported as custom web components (`<hello-widget>`, `<form-composer>`, etc.)
 - Two-way input binding: PHP ↔ React
 - Shadow DOM isolation for styling
-- Simple PHP + Apache + built React served via Docker
+- Intelligent component discovery system
+- Complex composed components (forms, data tables, cards)
+- PHP-friendly component composition
 
-### 🚀 NEW: Component Discovery System
+### 🚀 Component Discovery System
 - **Intelligent loading**: Only loads components actually used on each page
 - **Auto-discovery**: Automatically finds components from filesystem and manifest
 - **Dynamic loading**: Add components via JavaScript, they load on-demand
@@ -18,26 +20,65 @@ This project shows how to use **React** components (built as Web Components) ins
 - **One script tag**: Replace all individual component imports
 - **Real-time monitoring**: Built-in performance and usage tracking
 
+### 🧩 Composed Components
+- **Form Composer**: Dynamic form builder with validation
+- **Data Table**: Sortable, paginated tables with custom rendering
+- **Card Components**: Flexible layouts with headers, bodies, footers
+- **PHP Composable**: Nested HTML composition for PHP integration
+
 ---
 
-## Local Development
+## 🚀 Quick Setup
 
+### Option 1: Native Development (Recommended)
+```bash
+# 1. Clone and navigate
+git clone <repo-url>
+cd react-php-strangulation-example
+
+# 2. Install dependencies
+cd react-frontend
+npm install
+
+# 3. Build components
+npm run build
+
+# 4. Start PHP server
+cd ../public
+php -S localhost:8080
+
+# 5. Visit the demos
+# http://localhost:8080 - Home page with all demos
+```
+
+### Option 2: Docker (Alternative)
 ```bash
 docker compose up --build
 ```
 
-Then visit these examples:
+## 📱 Demo Pages
 
-### 🎯 Discovery System Examples (Recommended)
-- **[performance-comparison.php](http://localhost:8083/performance-comparison.php)** - Performance comparison & benefits
-- **[hello-only-discovery.php](http://localhost:8083/hello-only-discovery.php)** - Single component (optimized)
-- **[parent-only-discovery.php](http://localhost:8083/parent-only-discovery.php)** - Parent component only
-- **[empty-discovery.php](http://localhost:8083/empty-discovery.php)** - Zero components (maximum performance)
-- **[full-discovery.php](http://localhost:8083/full-discovery.php)** - Complete discovery demo
+Visit `http://localhost:8080` for the complete demo home page, or go directly to:
 
-### 📚 Legacy Examples (For Comparison)
-- **[hello.php](http://localhost:8083/hello.php)** - Original example with manual loading
-- **[hello-only.php](http://localhost:8083/hello-only.php)** - Single component (old way)
+### 🎯 Featured Demos
+- **[composed-components-demo.php](http://localhost:8080/composed-components-demo.php)** - Advanced composed components showcase
+- **[php-composed-demo.php](http://localhost:8080/php-composed-demo.php)** - PHP-friendly composition demo
+
+### 📊 Discovery System Examples
+- **[full-discovery.php](http://localhost:8080/full-discovery.php)** - Complete discovery system demo
+- **[hello-discovery.php](http://localhost:8080/hello-discovery.php)** - Hello with discovery
+- **[parent-only-discovery.php](http://localhost:8080/parent-only-discovery.php)** - Parent with discovery
+- **[empty-discovery.php](http://localhost:8080/empty-discovery.php)** - Zero components (optimal performance)
+- **[performance-comparison.php](http://localhost:8080/performance-comparison.php)** - Performance comparison
+
+### 📚 Basic Components
+- **[hello.php](http://localhost:8080/hello.php)** - Basic Hello component
+- **[parent-only.php](http://localhost:8080/parent-only.php)** - Parent with nested child
+- **[hello-only.php](http://localhost:8080/hello-only.php)** - Single component only
+
+### 🔍 Debug Tools
+- **[debug-discovery.html](http://localhost:8080/debug-discovery.html)** - Discovery system debugging
+- **[simple-debug.html](http://localhost:8080/simple-debug.html)** - Basic connectivity test
 
 ## 🚀 Quick Start with Discovery System
 
@@ -79,7 +120,24 @@ npm run build
 | Single component | Loads component only | Loads component only | Same |
 | Multiple components | Loads ALL components | Loads used components | 30-50% |
 | No components | Still loads bundles | Zero component code | 80-90% |
+| Complex components | Pre-load everything | Loads on-demand | 60-80% |
 | Dynamic components | Must pre-load all | Loads on-demand | ∞% flexible |
+
+## 🌟 What Makes This Different
+
+### Traditional Web Components
+- Manual script imports for each component
+- All components loaded regardless of usage
+- No intelligent discovery or loading
+- Basic component isolation only
+
+### This Project's Approach
+- **Intelligent Discovery**: Only loads what's actually used
+- **Advanced Components**: Complex forms, tables, cards with rich interactions
+- **PHP Integration**: Components work seamlessly with existing PHP
+- **Performance Optimized**: Dramatic bundle size reduction
+- **Developer Friendly**: One script tag, automatic discovery
+- **Production Ready**: Comprehensive error handling and debugging tools
 
 ## 🔧 Architecture
 
@@ -93,6 +151,10 @@ npm run build
 - `react-frontend/components/Hello.jsx` - Simple input component
 - `react-frontend/components/Parent.jsx` - Parent component with child
 - `react-frontend/components/Child.jsx` - Child component
+- `react-frontend/components/FormComposer.jsx` - Dynamic form builder
+- `react-frontend/components/DataTable.jsx` - Advanced data table
+- `react-frontend/components/Card.jsx` - Flexible card layout
+- `react-frontend/components/PHPComposableCard.jsx` - PHP-friendly composition
 
 ### Legacy Files (Can be removed after migration)
 - `react-frontend/hello.js` - Individual Hello component loader
@@ -127,16 +189,42 @@ npm run build
 </script>
 ```
 
+### Advanced Component Usage
+```html
+<!-- Form Composer with validation -->
+<form-composer data-props='{
+  "title": "User Registration",
+  "fields": [
+    {"name": "email", "type": "email", "required": true},
+    {"name": "password", "type": "password", "required": true}
+  ]
+}'></form-composer>
+
+<!-- Data Table with sorting -->
+<data-table data-props='{
+  "data": [{"name": "John", "age": 30}],
+  "columns": [{"key": "name", "label": "Name"}],
+  "sortable": true,
+  "paginated": true
+}'></data-table>
+
+<!-- Card with flexible content -->
+<card-widget data-props='{"title": "My Card", "variant": "primary"}'>
+  <p>Card content goes here</p>
+  <button>Action Button</button>
+</card-widget>
+```
+
 ### Dynamic Component Loading
 ```javascript
 // Add component dynamically
-const newComponent = document.createElement('hello-widget');
-newComponent.setAttribute('data-props', '{"name": "Dynamic!"}');
+const newComponent = document.createElement('form-composer');
+newComponent.setAttribute('data-props', '{"title": "Dynamic Form"}');
 document.body.appendChild(newComponent);
 // Component auto-loads when added to DOM!
 
 // Manual loading
-await window.componentDiscovery.loadComponent('hello-widget');
+await window.componentDiscovery.loadComponent('data-table');
 
 // Check what's loaded
 console.log(window.componentDiscovery.getStats());
