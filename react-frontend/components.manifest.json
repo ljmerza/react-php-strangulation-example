@@ -1,0 +1,32 @@
+{
+  "version": "1.0.0",
+  "components": {
+    "hello-widget": {
+      "path": "./components/Hello.jsx",
+      "version": "1.0.0",
+      "dependencies": ["react", "react-dom"],
+      "description": "Simple hello component with input",
+      "props": {
+        "name": "string",
+        "onInputChange": "function"
+      }
+    },
+    "parent-widget": {
+      "path": "./components/Parent.jsx",
+      "version": "1.2.0",
+      "dependencies": ["react", "react-dom"],
+      "description": "Parent component containing child components",
+      "props": {}
+    }
+  },
+  "paths": {
+    "base": "./",
+    "components": "./components/",
+    "dist": "../public/dist/"
+  },
+  "metadata": {
+    "created": "2025-09-19",
+    "framework": "react",
+    "bundler": "vite"
+  }
+}

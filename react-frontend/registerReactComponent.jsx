@@ -1,6 +1,9 @@
 import { createRoot } from 'react-dom/client';
 import cssText from './components.css?inline';
 
+// Registry to track registered components
+const registeredComponents = new Set();
+
 export function registerReactComponent(tagName, Component) {
   class ReactCustomElement extends HTMLElement {
     static get observedAttributes() {
@@ -63,5 +66,20 @@ export function registerReactComponent(tagName, Component) {
 
   if (!customElements.get(tagName)) {
     customElements.define(tagName, ReactCustomElement);
+    registeredComponents.add(tagName);
+
+    // Dispatch global event for registry tracking
+    window.dispatchEvent(new CustomEvent('web-component-registered', {
+      detail: { tagName, Component }
+    }));
   }
+}
+
+// Helper functions for registry integration
+export function isComponentRegistered(tagName) {
+  return registeredComponents.has(tagName);
+}
+
+export function getRegisteredComponents() {
+  return Array.from(registeredComponents);
 }
