@@ -1,5 +1,4 @@
 import { componentRegistry } from './ComponentRegistry.js';
-import './components.css';
 
 // Initialize the discovery system
 class ComponentDiscovery {

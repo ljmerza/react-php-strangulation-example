@@ -1,5 +1,6 @@
 import { createRoot } from 'react-dom/client';
 import cssText from './components.css?inline';
+import composedCssText from './composed-components.css?inline';
 
 // Registry to track registered components
 const registeredComponents = new Set();
@@ -24,7 +25,7 @@ export function registerReactComponent(tagName, Component) {
         
         // Inject CSS into shadow DOM
         const style = document.createElement('style');
-        style.textContent = cssText;
+        style.textContent = cssText + '\n' + composedCssText;
         this.shadowRoot.appendChild(style);
       }
       if (!this._root) {
@@ -55,9 +56,16 @@ export function registerReactComponent(tagName, Component) {
         }));
       };
 
+      // For composable components, pass the innerHTML as children
+      const innerHTML = this.innerHTML;
+
       const propsWithHandlers = {
         ...this._props,
-        onInputChange: (val) => emit('input-changed', { value: val })
+        children: innerHTML,
+        onInputChange: (val) => emit('input-changed', { value: val }),
+        onSubmit: (data) => emit('form-submitted', { data }),
+        onFieldChange: (field, value, formData) => emit('field-changed', { field, value, formData }),
+        onRowClick: (row, index) => emit('row-clicked', { row, index })
       };
 
       this._root.render(<Component {...propsWithHandlers} />);

@@ -1,4 +1,4 @@
-import { registerReactComponent } from './registerReactComponent';
+import { registerReactComponent } from './registerReactComponent.jsx';
 
 export class ComponentRegistry {
   constructor() {
@@ -92,7 +92,7 @@ export class ComponentRegistry {
 
     customElements.forEach(el => {
       const tagName = el.tagName.toLowerCase();
-      if (tagName.includes('-') && !customElements.get(tagName)) {
+      if (tagName.includes('-')) {
         discovered.add(tagName);
       }
     });

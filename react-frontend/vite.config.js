@@ -5,6 +5,11 @@ import path from 'path';
 import { copyFileSync } from 'fs';
 
 export default defineConfig({
+  server: {
+    host: '0.0.0.0', // Listen on all network interfaces
+    port: 5173,
+    strictPort: true, // Don't try other ports if 5173 is occupied
+  },
   plugins: [
     react(),
     // Plugin to copy manifest to dist directory
