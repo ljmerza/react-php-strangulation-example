@@ -1,0 +1,101 @@
+{
+  "version": "1.0.0",
+  "components": {
+    "hello-widget": {
+      "path": "./components/Hello.jsx",
+      "version": "1.0.0",
+      "dependencies": ["react", "react-dom"],
+      "description": "Simple hello component with input",
+      "category": "basic",
+      "props": {
+        "name": "string",
+        "onInputChange": "function"
+      }
+    },
+    "parent-widget": {
+      "path": "./components/Parent.jsx",
+      "version": "1.2.0",
+      "dependencies": ["react", "react-dom"],
+      "description": "Parent component containing child components",
+      "category": "layout",
+      "props": {}
+    },
+    "form-composer": {
+      "path": "./components/FormComposer.jsx",
+      "version": "1.0.0",
+      "dependencies": ["react", "react-dom"],
+      "description": "Dynamic form builder with validation and field composition",
+      "category": "composed",
+      "props": {
+        "title": "string",
+        "fields": "array",
+        "initialData": "object",
+        "onSubmit": "function",
+        "onFieldChange": "function",
+        "submitLabel": "string",
+        "resetLabel": "string"
+      },
+      "composition": ["FormField"],
+      "features": ["validation", "dynamic-fields", "form-state"]
+    },
+    "card-widget": {
+      "path": "./components/Card.jsx",
+      "version": "1.0.0",
+      "dependencies": ["react", "react-dom"],
+      "description": "Flexible card layout with header, body, and footer sections",
+      "category": "composed",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "headerActions": "node",
+        "children": "node",
+        "footer": "node",
+        "className": "string",
+        "variant": "string"
+      },
+      "composition": [],
+      "features": ["flexible-layout", "customizable-sections"]
+    },
+    "data-table": {
+      "path": "./components/DataTable.jsx",
+      "version": "1.0.0",
+      "dependencies": ["react", "react-dom"],
+      "description": "Advanced data table with sorting, pagination, and custom rendering",
+      "category": "composed",
+      "props": {
+        "data": "array",
+        "columns": "array",
+        "sortable": "boolean",
+        "paginated": "boolean",
+        "pageSize": "number",
+        "onRowClick": "function",
+        "emptyMessage": "string"
+      },
+      "composition": [],
+      "features": ["sorting", "pagination", "custom-rendering", "row-interaction"]
+    },
+    "php-composable-card": {
+      "path": "./components/PHPComposableCard.jsx",
+      "version": "1.0.0",
+      "dependencies": ["react", "react-dom"],
+      "description": "PHP-friendly composable card that processes nested web components",
+      "category": "composable",
+      "props": {
+        "variant": "string",
+        "className": "string"
+      },
+      "composition": ["card-header", "card-body", "card-footer"],
+      "features": ["php-composition", "nested-web-components", "dynamic-content"]
+    }
+  },
+  "paths": {
+    "base": "./",
+    "components": "./components/",
+    "dist": "../public/dist/"
+  },
+  "metadata": {
+    "created": "2025-09-19",
+    "framework": "react",
+    "bundler": "vite"
+  }
+}
