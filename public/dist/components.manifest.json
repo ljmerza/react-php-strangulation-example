@@ -102,6 +102,6 @@
     "created": "2025-09-20",
     "framework": "react",
     "bundler": "vite",
-    "plugin": "react-php-components"
+    "plugin": "react-strangler"
   }
 }

@@ -1,7 +1,7 @@
 // react-frontend/vite.config.js
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { reactPhpComponents } from './lib/vite-plugin.js';
+import { reactStrangler } from './lib/vite-plugin.js';
 
 export default defineConfig({
   server: {
@@ -11,8 +11,8 @@ export default defineConfig({
   },
   plugins: [
     react(),
-    // React-PHP Component System Plugin (fully automatic!)
-    reactPhpComponents({
+    // React Strangler Plugin (fully automatic!)
+    reactStrangler({
       outputDir: '../public/dist',
       publicDir: '../public'
     })

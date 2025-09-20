@@ -2,7 +2,7 @@
 import path from 'path';
 import { writeFileSync, readFileSync, existsSync } from 'fs';
 
-export function reactPhpComponents(options = {}) {
+export function reactStrangler(options = {}) {
   const {
     outputDir = '../public/dist',
     publicDir = '../public',
@@ -12,7 +12,7 @@ export function reactPhpComponents(options = {}) {
   let config;
 
   return {
-    name: 'react-php-components',
+    name: 'react-strangler',
 
     configResolved(resolvedConfig) {
       // Store config for later use
@@ -96,7 +96,7 @@ export const ${exportName} = ${exportName}Text;`;
             created: new Date().toISOString().split('T')[0],
             framework: 'react',
             bundler: 'vite',
-            plugin: 'react-php-components'
+            plugin: 'react-strangler'
           }
         };
 
@@ -155,4 +155,4 @@ export const ${exportName} = ${exportName}Text;`;
   };
 }
 
-export default reactPhpComponents;
+export default reactStrangler;
