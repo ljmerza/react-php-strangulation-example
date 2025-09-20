@@ -4,9 +4,9 @@ import { writeFileSync, readFileSync, existsSync } from 'fs';
 
 export function reactPhpComponents(options = {}) {
   const {
-    manifestPath = 'components.manifest.json',
     outputDir = '../public/dist',
-    publicDir = '../public'
+    publicDir = '../public',
+    discoveryEntry = 'lib/discover.js'
   } = options;
 
   let config;
@@ -17,6 +17,28 @@ export function reactPhpComponents(options = {}) {
     configResolved(resolvedConfig) {
       // Store config for later use
       config = resolvedConfig;
+    },
+
+    config(userConfig, { command }) {
+      // Auto-configure build settings for React-PHP components
+      if (command === 'build') {
+        return {
+          build: {
+            rollupOptions: {
+              input: {
+                discover: path.resolve(userConfig.root || process.cwd(), discoveryEntry)
+              },
+              output: {
+                entryFileNames: '[name].js',
+                format: 'es',
+                dir: path.resolve(userConfig.root || process.cwd(), outputDir)
+              }
+            },
+            outDir: path.resolve(userConfig.root || process.cwd(), outputDir),
+            emptyOutDir: true
+          }
+        };
+      }
     },
 
     buildStart() {
@@ -61,11 +83,24 @@ export const ${exportName} = ${exportName}Text;`;
 
     writeBundle(options, bundle) {
       try {
-        // Read the base manifest template
-        const manifestFullPath = path.resolve(config.root, manifestPath);
-        const manifest = JSON.parse(readFileSync(manifestFullPath, 'utf8'));
+        // Auto-generate manifest from discovered components
+        const manifest = {
+          version: '1.0.0',
+          components: {},
+          paths: {
+            base: './',
+            components: './components/',
+            dist: outputDir
+          },
+          metadata: {
+            created: new Date().toISOString().split('T')[0],
+            framework: 'react',
+            bundler: 'vite',
+            plugin: 'react-php-components'
+          }
+        };
 
-        // Find the actual built asset paths
+        // Find the actual built asset paths and auto-generate component definitions
         const assetMap = {};
         Object.keys(bundle).forEach(fileName => {
           const chunk = bundle[fileName];
@@ -74,28 +109,33 @@ export const ${exportName} = ${exportName}Text;`;
             const componentName = path.basename(modulePath, path.extname(modulePath));
             if (modulePath.includes('/components/')) {
               assetMap[componentName] = `./${fileName}`;
+
+              // Auto-generate component definition
+              const tagName = componentName === 'DataTable'
+                ? 'data-table'
+                : `${componentName.toLowerCase()}-widget`;
+
+              const category = componentName === 'Hello' ? 'basic'
+                : componentName.includes('Card') ? 'card'
+                : 'composed';
+
+              manifest.components[tagName] = {
+                path: `./${fileName}`,
+                version: '1.0.0',
+                dependencies: ['react', 'react-dom'],
+                description: `${componentName} component`,
+                category: category,
+                props: {
+                  className: 'string'
+                }
+              };
+
+              console.log(`📦 Auto-generated: ${tagName} → ${fileName}`);
             }
           }
         });
 
         console.log('🔍 Found component assets:', assetMap);
-
-        // Update manifest paths with actual built asset paths
-        Object.keys(manifest.components).forEach(componentKey => {
-          const component = manifest.components[componentKey];
-          const originalPath = component.path;
-
-          // Extract component name from original path
-          if (originalPath.includes('/components/')) {
-            const componentName = path.basename(originalPath, '.jsx');
-            if (assetMap[componentName]) {
-              component.path = assetMap[componentName];
-              console.log(`📦 Updated ${componentKey}: ${originalPath} → ${component.path}`);
-            } else {
-              console.warn(`⚠️  No asset found for component: ${componentName}`);
-            }
-          }
-        });
 
         // Write updated manifest to both dist and public
         const distManifestPath = path.resolve(config.root, outputDir, 'components.manifest.json');

@@ -72,8 +72,8 @@ export class ComponentRegistry {
 
         if (!this.components.has(tagName)) {
           this.register(tagName, moduleLoader, {
-            path,
             source: 'filesystem',
+            path: path,
             autoDiscovered: true
           });
           discovered.push(tagName);

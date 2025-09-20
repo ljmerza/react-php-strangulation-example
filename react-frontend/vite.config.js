@@ -1,7 +1,6 @@
 // react-frontend/vite.config.js
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import path from 'path';
 import { reactPhpComponents } from './lib/vite-plugin.js';
 
 export default defineConfig({
@@ -12,26 +11,10 @@ export default defineConfig({
   },
   plugins: [
     react(),
-    // React-PHP Component System Plugin
+    // React-PHP Component System Plugin (fully automatic!)
     reactPhpComponents({
-      manifestPath: 'components.manifest.json',
       outputDir: '../public/dist',
       publicDir: '../public'
     })
-  ],
-  define: { 'process.env.NODE_ENV': '"production"' },
-  build: {
-    rollupOptions: {
-      input: {
-        discover: path.resolve(__dirname, 'lib/discover.js'), // Discovery system
-      },
-      output: {
-        entryFileNames: '[name].js',
-        format: 'es',
-        dir: path.resolve(__dirname, '../public/dist'),
-      },
-    },
-    outDir: path.resolve(__dirname, '../public/dist'),
-    emptyOutDir: true,
-  }
+  ]
 });

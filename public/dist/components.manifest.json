@@ -1,20 +1,6 @@
 {
   "version": "1.0.0",
   "components": {
-    "hello-widget": {
-      "path": "./assets/Hello-C4bkJOOp.js",
-      "version": "1.0.0",
-      "dependencies": [
-        "react",
-        "react-dom"
-      ],
-      "description": "Simple hello component with input",
-      "category": "basic",
-      "props": {
-        "name": "string",
-        "onInputChange": "function"
-      }
-    },
     "card-widget": {
       "path": "./assets/Card-BuAv5okb.js",
       "version": "1.0.0",
@@ -22,26 +8,9 @@
         "react",
         "react-dom"
       ],
-      "description": "Main composable card component",
+      "description": "Card component",
       "category": "card",
       "props": {
-        "variant": "string",
-        "className": "string",
-        "children": "node"
-      }
-    },
-    "cardheader-widget": {
-      "path": "./assets/CardHeader-BwigY0yE.js",
-      "version": "1.0.0",
-      "dependencies": [
-        "react",
-        "react-dom"
-      ],
-      "description": "Card header component with title and subtitle",
-      "category": "card",
-      "props": {
-        "title": "string",
-        "subtitle": "string",
         "className": "string"
       }
     },
@@ -52,12 +21,10 @@
         "react",
         "react-dom"
       ],
-      "description": "Card body component with optional padding",
+      "description": "CardBody component",
       "category": "card",
       "props": {
-        "padding": "boolean",
-        "className": "string",
-        "children": "node"
+        "className": "string"
       }
     },
     "cardfooter-widget": {
@@ -67,12 +34,23 @@
         "react",
         "react-dom"
       ],
-      "description": "Card footer component with alignment options",
+      "description": "CardFooter component",
       "category": "card",
       "props": {
-        "align": "string",
-        "className": "string",
-        "children": "node"
+        "className": "string"
+      }
+    },
+    "cardheader-widget": {
+      "path": "./assets/CardHeader-BwigY0yE.js",
+      "version": "1.0.0",
+      "dependencies": [
+        "react",
+        "react-dom"
+      ],
+      "description": "CardHeader component",
+      "category": "card",
+      "props": {
+        "className": "string"
       }
     },
     "data-table": {
@@ -82,34 +60,48 @@
         "react",
         "react-dom"
       ],
-      "description": "Advanced data table with sorting, pagination, and custom rendering",
+      "description": "DataTable component",
       "category": "composed",
       "props": {
-        "data": "array",
-        "columns": "array",
-        "sortable": "boolean",
-        "paginated": "boolean",
-        "pageSize": "number",
-        "onRowClick": "function",
-        "emptyMessage": "string"
-      },
-      "composition": [],
-      "features": [
-        "sorting",
-        "pagination",
-        "custom-rendering",
-        "row-interaction"
-      ]
+        "className": "string"
+      }
+    },
+    "formfield-widget": {
+      "path": "./assets/FormField-CZ964PiQ.js",
+      "version": "1.0.0",
+      "dependencies": [
+        "react",
+        "react-dom"
+      ],
+      "description": "FormField component",
+      "category": "composed",
+      "props": {
+        "className": "string"
+      }
+    },
+    "hello-widget": {
+      "path": "./assets/Hello-C4bkJOOp.js",
+      "version": "1.0.0",
+      "dependencies": [
+        "react",
+        "react-dom"
+      ],
+      "description": "Hello component",
+      "category": "basic",
+      "props": {
+        "className": "string"
+      }
     }
   },
   "paths": {
     "base": "./",
     "components": "./components/",
-    "dist": "../public/dist/"
+    "dist": "../public/dist"
   },
   "metadata": {
-    "created": "2025-09-19",
+    "created": "2025-09-20",
     "framework": "react",
-    "bundler": "vite"
+    "bundler": "vite",
+    "plugin": "react-php-components"
   }
 }
