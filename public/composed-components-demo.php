@@ -129,6 +129,62 @@ include 'header.php';
   });
 </script>
 
+<div class="demo-section">
+  <h3>💻 How It Works</h3>
+  <div class="section-description">
+    Code examples showing composable forms and individual attribute usage.
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+    <div>
+      <h4>Composable Forms</h4>
+      <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; font-family: monospace; font-size: 12px;">
+        <code style="color: #0d6efd;">&lt;form-composer title="Contact Us"&gt;</code><br>
+        <code>&nbsp;&nbsp;&lt;form-field</code><br>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;name="email"</code><br>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;label="Email"</code><br>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;type="email"</code><br>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;required&gt;</code><br>
+        <code>&nbsp;&nbsp;&lt;/form-field&gt;</code><br><br>
+        <code>&nbsp;&nbsp;&lt;form-field</code><br>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;name="country"</code><br>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;type="select"&gt;</code><br>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;option value="us"&gt;USA&lt;/option&gt;</code><br>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;option value="ca"&gt;Canada&lt;/option&gt;</code><br>
+        <code>&nbsp;&nbsp;&lt;/form-field&gt;</code><br><br>
+        <code>&nbsp;&nbsp;&lt;form-submit&gt;Send&lt;/form-submit&gt;</code><br>
+        <code style="color: #0d6efd;">&lt;/form-composer&gt;</code>
+      </div>
+    </div>
+
+    <div>
+      <h4>Individual Attributes</h4>
+      <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; font-family: monospace; font-size: 12px;">
+        <code style="color: #0d6efd;">&lt;data-table</code><br>
+        <code>&nbsp;&nbsp;sortable="true"</code><br>
+        <code>&nbsp;&nbsp;paginated="true"</code><br>
+        <code>&nbsp;&nbsp;page-size="5"</code><br>
+        <code>&nbsp;&nbsp;empty-message="No data"</code><br>
+        <code>&nbsp;&nbsp;data='[{"name": "Alice"}, ...]'</code><br>
+        <code>&nbsp;&nbsp;columns='[{"key": "name", "label": "Name"}]'&gt;</code><br>
+        <code style="color: #0d6efd;">&lt;/data-table&gt;</code><br><br>
+        <code style="color: #198754;">// Update individual attribute</code><br>
+        <code>table.setAttribute('page-size', '10');</code>
+      </div>
+    </div>
+  </div>
+
+  <div style="background: #e6f3ff; padding: 15px; border-radius: 5px; margin-top: 15px;">
+    <strong>💡 Key Benefits:</strong>
+    <ul style="margin: 10px 0;">
+      <li>✅ <strong>Semantic HTML</strong> - Individual attributes instead of JSON blobs</li>
+      <li>✅ <strong>Composable Structure</strong> - Build forms like React components</li>
+      <li>✅ <strong>Auto-discovery</strong> - Components load automatically when found in DOM</li>
+      <li>✅ <strong>On-demand Loading</strong> - Zero unused JavaScript</li>
+    </ul>
+  </div>
+</div>
+
 </div>
 
 <?php include 'footer.php'; ?>

@@ -126,6 +126,29 @@ include 'header.php';
 
 </script>
 
+<div class="demo-section">
+  <h3>💻 How It Works</h3>
+  <div class="section-description">
+    Maximum performance: Discovery system loads but no components are initialized until needed.
+  </div>
+
+  <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; font-family: monospace; font-size: 14px;">
+    <strong>HTML (Zero Components):</strong><br>
+    <code style="color: #d63384;">&lt;script type="module" src="dist/discover.js"&gt;&lt;/script&gt;</code><br>
+    <code style="color: #6c757d;">// No React components in HTML = Zero bundle loading</code>
+  </div>
+
+  <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; font-family: monospace; font-size: 14px; margin-top: 10px;">
+    <strong>Dynamic Loading:</strong><br>
+    <code style="color: #198754;">// Add component dynamically</code><br>
+    <code>const hello = document.createElement('hello-widget');</code><br>
+    <code>hello.setAttribute('data-props', '{"name": "Dynamic!"}');</code><br>
+    <code>container.appendChild(hello);</code><br><br>
+    <code style="color: #198754;">// Discovery system auto-loads on demand</code><br>
+    <code>await window.componentDiscovery.loadComponent('hello-widget');</code>
+  </div>
+</div>
+
 </div>
 
 <?php include 'footer.php'; ?>
