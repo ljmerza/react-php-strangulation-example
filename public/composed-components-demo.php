@@ -13,106 +13,66 @@ include 'header.php';
     A flexible form builder that composes multiple field types with validation and real-time data binding.
   </div>
 
-  <form-composer
-    data-props='{
-      "title": "User Registration Form",
-      "submitLabel": "Register User",
-      "resetLabel": "Clear Form",
-      "fields": [
-        {
-          "name": "firstName",
-          "label": "First Name",
-          "type": "text",
-          "required": true,
-          "placeholder": "Enter your first name"
-        },
-        {
-          "name": "lastName",
-          "label": "Last Name",
-          "type": "text",
-          "required": true,
-          "placeholder": "Enter your last name"
-        },
-        {
-          "name": "email",
-          "label": "Email Address",
-          "type": "email",
-          "required": true,
-          "placeholder": "user@example.com"
-        },
-        {
-          "name": "age",
-          "label": "Age",
-          "type": "number",
-          "required": false,
-          "placeholder": "Enter your age"
-        },
-        {
-          "name": "country",
-          "label": "Country",
-          "type": "select",
-          "required": true,
-          "placeholder": "Select your country",
-          "options": [
-            {"value": "us", "label": "United States"},
-            {"value": "ca", "label": "Canada"},
-            {"value": "uk", "label": "United Kingdom"},
-            {"value": "de", "label": "Germany"},
-            {"value": "fr", "label": "France"}
-          ]
-        },
-        {
-          "name": "bio",
-          "label": "Bio",
-          "type": "textarea",
-          "required": false,
-          "placeholder": "Tell us about yourself..."
-        },
-        {
-          "name": "newsletter",
-          "label": "Subscribe to newsletter",
-          "type": "checkbox",
-          "required": false
-        }
-      ],
-      "initialData": {
-        "firstName": "John",
-        "lastName": "Doe",
-        "newsletter": true
-      }
-    }'
-  ></form-composer>
-</div>
+  <form-composer title="User Registration Form">
+    <form-field
+      name="firstName"
+      label="First Name"
+      type="text"
+      required
+      placeholder="Enter your first name">
+    </form-field>
 
-<div class="demo-section">
-  <h2>🃏 Flexible Card Layouts</h2>
-  <div class="section-description">
-    Composable card components with separate header, body, and footer elements that work together.
-  </div>
+    <form-field
+      name="lastName"
+      label="Last Name"
+      type="text"
+      required
+      placeholder="Enter your last name">
+    </form-field>
 
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-    <card-widget data-props='{"variant": "primary"}'>
-      <cardheader-widget data-props='{"title": "Basic Card", "subtitle": "Simple card example"}'>
-      </cardheader-widget>
-      <cardbody-widget>
-        <p>This is a composable card with proper header, body structure. The content renders as actual HTML elements.</p>
-      </cardbody-widget>
-      <cardfooter-widget>
-        <button onclick="alert('Card button clicked!')">Action Button</button>
-      </cardfooter-widget>
-    </card-widget>
+    <form-field
+      name="email"
+      label="Email Address"
+      type="email"
+      required
+      placeholder="user@example.com">
+    </form-field>
 
-    <card-widget data-props='{"variant": "warning"}'>
-      <cardheader-widget data-props='{"title": "Warning Alert"}'>
-      </cardheader-widget>
-      <cardbody-widget>
-        <p>⚠️ Your subscription expires in 3 days. Please renew to continue using premium features.</p>
-      </cardbody-widget>
-      <cardfooter-widget>
-        <button style="background: #ffc107; border: none; padding: 8px 16px; border-radius: 4px;">Renew Now</button>
-      </cardfooter-widget>
-    </card-widget>
-  </div>
+    <form-field
+      name="age"
+      label="Age"
+      type="number"
+      placeholder="Enter your age">
+    </form-field>
+
+    <form-field
+      name="country"
+      label="Country"
+      type="select"
+      required
+      placeholder="Select your country">
+      <option value="us">United States</option>
+      <option value="ca">Canada</option>
+      <option value="uk">United Kingdom</option>
+      <option value="de">Germany</option>
+      <option value="fr">France</option>
+    </form-field>
+
+    <form-field
+      name="bio"
+      label="Bio"
+      type="textarea"
+      placeholder="Tell us about yourself...">
+    </form-field>
+
+    <form-field
+      name="newsletter"
+      label="Subscribe to newsletter"
+      type="checkbox">
+    </form-field>
+
+    <form-submit>Register User</form-submit>
+  </form-composer>
 </div>
 
 <div class="demo-section">

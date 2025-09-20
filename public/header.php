@@ -93,7 +93,6 @@
       <a href="index.php" <?php echo (basename($_SERVER['PHP_SELF']) == 'index.php') ? 'class="active"' : ''; ?>>🏠 Home</a>
       <a href="hello-discovery.php" <?php echo (basename($_SERVER['PHP_SELF']) == 'hello-discovery.php') ? 'class="active"' : ''; ?>>👋 Hello</a>
       <a href="empty-discovery.php" <?php echo (basename($_SERVER['PHP_SELF']) == 'empty-discovery.php') ? 'class="active"' : ''; ?>>⚡ Empty Discovery</a>
-      <a href="full-discovery.php" <?php echo (basename($_SERVER['PHP_SELF']) == 'full-discovery.php') ? 'class="active"' : ''; ?>>📊 Full Discovery</a>
       <a href="composed-components-demo.php" <?php echo (basename($_SERVER['PHP_SELF']) == 'composed-components-demo.php') ? 'class="active"' : ''; ?>>🧩 Components</a>
     </div>
   </div>

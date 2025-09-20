@@ -8,11 +8,11 @@ include 'header.php';
   <p>This page uses the new component discovery system - components load automatically!</p>
 
 <label>Hello from PHP:
-  <input type="text" id="phpInput" value="Leo" />
+  <input type="text" id="phpInput" value="" />
 </label>
 
 <br><br>
-<hello-widget id="hello" data-props='{"name": "Leo"}'></hello-widget>
+<hello-widget id="hello" data-props='{"name": ""}'></hello-widget>
 
 <script>
   // Wait for discovery system to initialize

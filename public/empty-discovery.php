@@ -29,7 +29,7 @@ include 'header.php';
   <h3>➕ Dynamic Component Test:</h3>
   <p>Click to add components dynamically - they'll load on-demand!</p>
   <button onclick="addHelloComponent()">Add Hello Component</button>
-  <button onclick="addCardComponent()">Add Card Component</button>
+  <button onclick="addFormComponent()">Add Form Component</button>
   <div id="dynamic-components"></div>
 </div>
 
@@ -85,35 +85,30 @@ include 'header.php';
     }, 100);
   }
 
-  function addCardComponent() {
+  function addFormComponent() {
     const container = document.getElementById('dynamic-components');
-    const card = document.createElement('card-widget');
-    card.setAttribute('data-props', '{"variant": "primary"}');
-    card.innerHTML = `
-      <cardheader-widget data-props='{"title": "Dynamic Card", "subtitle": "Added on-demand"}'></cardheader-widget>
-      <cardbody-widget data-props='{"padding": true}'>
-        <p>This card was added dynamically and loaded on-demand!</p>
-      </cardbody-widget>
-      <cardfooter-widget data-props='{"align": "right"}'>
-        <button onclick="alert('Card button clicked!')">Action</button>
-      </cardfooter-widget>
+    const form = document.createElement('form-composer');
+    form.setAttribute('title', 'Dynamic Form');
+    form.innerHTML = `
+      <form-field name="dynamicName" label="Name" type="text" required></form-field>
+      <form-field name="dynamicEmail" label="Email" type="email" required></form-field>
+      <form-submit>Submit Dynamic Form</form-submit>
     `;
 
     const wrapper = document.createElement('div');
     wrapper.style.margin = '10px 0';
     wrapper.appendChild(document.createTextNode('Dynamically added: '));
-    wrapper.appendChild(card);
+    wrapper.appendChild(form);
 
     container.appendChild(wrapper);
 
-    // Manually trigger card components loading
+    // Manually trigger form components loading
     setTimeout(async () => {
       if (window.componentDiscovery) {
         try {
-          await window.componentDiscovery.loadComponent('card-widget');
-          await window.componentDiscovery.loadComponent('cardheader-widget');
-          await window.componentDiscovery.loadComponent('cardbody-widget');
-          await window.componentDiscovery.loadComponent('cardfooter-widget');
+          await window.componentDiscovery.loadComponent('form-composer');
+          await window.componentDiscovery.loadComponent('form-field');
+          await window.componentDiscovery.loadComponent('form-submit');
 
           const statusDiv = document.getElementById('loading-status');
           const stats = window.componentDiscovery.getStats();
@@ -123,7 +118,7 @@ include 'header.php';
             • Bandwidth saved: ${stats.unloadedComponents} components not loaded
           `;
         } catch (error) {
-          console.error('Failed to load card components:', error);
+          console.error('Failed to load form components:', error);
         }
       }
     }, 100);

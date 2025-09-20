@@ -121,11 +121,6 @@ include 'header.php';
     <div class="section">
       <h2>📊 Discovery System</h2>
       <div class="grid">
-        <div class="card">
-          <h3>🔍 Full Discovery</h3>
-          <p>Complete component discovery with manifest loading and performance metrics.</p>
-          <a href="full-discovery.php">View Demo →</a>
-        </div>
 
         <div class="card">
           <h3>👋 Hello Discovery</h3>
