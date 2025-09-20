@@ -5,16 +5,74 @@ import composedCssText from './composed-components.css?inline';
 // Registry to track registered components
 const registeredComponents = new Set();
 
+// Utility function to parse HTML attributes into React props
+function parseComponentAttributes(element) {
+  const props = {};
+
+  // First, get props from data-props (backward compatibility)
+  const dataProps = element.getAttribute('data-props');
+  if (dataProps) {
+    try {
+      Object.assign(props, JSON.parse(dataProps));
+    } catch (e) {
+      console.warn('Invalid JSON in data-props', e);
+    }
+  }
+
+  // Then, override with individual attributes
+  Array.from(element.attributes).forEach(attr => {
+    const name = attr.name;
+    const value = attr.value;
+
+    // Skip data-props (already handled) and other special attributes
+    if (name === 'data-props' || name.startsWith('data-') || name === 'id' || name === 'class') {
+      return;
+    }
+
+    // Convert kebab-case to camelCase
+    const propName = name.replace(/-([a-z])/g, (match, letter) => letter.toUpperCase());
+
+    // Type conversion based on value
+    if (value === 'true') {
+      props[propName] = true;
+    } else if (value === 'false') {
+      props[propName] = false;
+    } else if (!isNaN(value) && value !== '') {
+      props[propName] = Number(value);
+    } else if (propName === 'data' || propName === 'columns') {
+      // Handle complex data structures as JSON
+      try {
+        props[propName] = JSON.parse(value);
+      } catch (e) {
+        console.warn(`Invalid JSON in ${propName} attribute:`, e);
+        props[propName] = value;
+      }
+    } else {
+      props[propName] = value;
+    }
+  });
+
+  return props;
+}
+
 export function registerReactComponent(tagName, Component) {
   class ReactCustomElement extends HTMLElement {
     static get observedAttributes() {
-      return ['data-props'];
+      // Observe common component attributes plus data-props for backward compatibility
+      return [
+        'data-props',
+        'sortable', 'paginated', 'page-size', 'empty-message', 'data', 'columns',  // DataTable
+        'title', 'submit-label', 'reset-label',                                     // FormComposer
+        'name', 'variant', 'className',                                             // Common props
+        'subtitle', 'padding', 'align'                                             // Card components
+      ];
     }
 
     constructor() {
       super();
       this._props = {};
       this._root = null; // Save the root to rerender later
+      this._initialized = false; // Track initialization state
     }
 
     connectedCallback() {
@@ -22,7 +80,7 @@ export function registerReactComponent(tagName, Component) {
       if (!this.shadowRoot) {
         // Isolate component in a shadow DOM but allow parent js to modify
         this.attachShadow({ mode: 'open' });
-        
+
         // Inject CSS into shadow DOM
         const style = document.createElement('style');
         style.textContent = cssText + '\n' + composedCssText;
@@ -31,22 +89,27 @@ export function registerReactComponent(tagName, Component) {
       if (!this._root) {
         this._root = createRoot(this.shadowRoot);
       }
+      this._initialized = true;
+      this._updateProps();
       this._render();
     }
 
     attributeChangedCallback(name, oldVal, newVal) {
-      if (name === 'data-props') {
-        try {
-          this._props = JSON.parse(newVal);
-          this._render();
-        } catch (e) {
-          console.warn('Invalid JSON in data-props', e);
-        }
-      }
+      // Only re-render if component is fully initialized
+      if (!this._initialized) return;
+
+      // Re-parse all attributes whenever any observed attribute changes
+      this._updateProps();
+      this._render();
+    }
+
+    _updateProps() {
+      // Parse all attributes (both data-props and individual attributes)
+      this._props = parseComponentAttributes(this);
     }
 
     _render() {
-      if (!this.isConnected) return;
+      if (!this.isConnected || !this._root || !this.shadowRoot) return;
 
       const emit = (eventName, detail) => {
         this.dispatchEvent(new CustomEvent(eventName, {

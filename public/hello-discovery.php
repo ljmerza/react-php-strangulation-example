@@ -1,13 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Hello Widget with Discovery</title>
-  <script type="module" src="dist/discover.js"></script>
-</head>
-<body>
+<?php
+$pageTitle = "Hello Widget with Discovery";
+include 'header.php';
+?>
 
-<h2>PHP + React Web Component (Discovery System)</h2>
-<p>This page uses the new component discovery system - components load automatically!</p>
+<div class="container">
+  <h2>PHP + React Web Component (Discovery System)</h2>
+  <p>This page uses the new component discovery system - components load automatically!</p>
 
 <label>Hello from PHP:
   <input type="text" id="phpInput" value="Leo" />
@@ -51,5 +49,6 @@
   });
 </script>
 
-</body>
-</html>
+</div>
+
+<?php include 'footer.php'; ?>

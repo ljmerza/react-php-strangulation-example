@@ -1,13 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>No Components (Discovery)</title>
-  <script type="module" src="dist/discover.js"></script>
-</head>
-<body>
+<?php
+$pageTitle = "No Components (Discovery)";
+include 'header.php';
+?>
 
-<h2>PHP Page with NO React Components</h2>
-<p><strong>📦 ZERO components will be loaded</strong> - Maximum performance!</p>
+<div class="container">
+  <h2>PHP Page with NO React Components</h2>
+  <p><strong>📦 ZERO components will be loaded</strong> - Maximum performance!</p>
 
 <div>
   <h3>Regular PHP Content:</h3>
@@ -45,11 +43,9 @@
         const stats = window.componentDiscovery.getStats();
 
         statusDiv.innerHTML = `
-          <strong>🎉 Discovery System Active</strong><br>
           • Total available components: ${stats.totalComponents}<br>
           • Components loaded: ${stats.loadedComponents}<br>
-          • Bandwidth saved: ${stats.unloadedComponents} components not loaded<br>
-          <br><em>All component code stayed unloaded - maximum performance!</em>
+          • Bandwidth saved: ${stats.unloadedComponents} components not loaded
         `;
       } else {
         statusDiv.innerHTML = '❌ Discovery system not available';
@@ -77,7 +73,11 @@
           await window.componentDiscovery.loadComponent('hello-widget');
           const statusDiv = document.getElementById('loading-status');
           const stats = window.componentDiscovery.getStats();
-          statusDiv.innerHTML += `<br><br><strong>📦 Component loaded on-demand!</strong><br>Now loaded: ${stats.loadedComponents} components`;
+          statusDiv.innerHTML = `
+            • Total available components: ${stats.totalComponents}<br>
+            • Components loaded: ${stats.loadedComponents}<br>
+            • Bandwidth saved: ${stats.unloadedComponents} components not loaded
+          `;
         } catch (error) {
           console.error('Failed to load hello-widget:', error);
         }
@@ -117,7 +117,11 @@
 
           const statusDiv = document.getElementById('loading-status');
           const stats = window.componentDiscovery.getStats();
-          statusDiv.innerHTML += `<br><br><strong>📦 Card components loaded on-demand!</strong><br>Now loaded: ${stats.loadedComponents} components`;
+          statusDiv.innerHTML = `
+            • Total available components: ${stats.totalComponents}<br>
+            • Components loaded: ${stats.loadedComponents}<br>
+            • Bandwidth saved: ${stats.unloadedComponents} components not loaded
+          `;
         } catch (error) {
           console.error('Failed to load card components:', error);
         }
@@ -127,5 +131,6 @@
 
 </script>
 
-</body>
-</html>
+</div>
+
+<?php include 'footer.php'; ?>

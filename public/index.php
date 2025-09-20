@@ -1,26 +1,26 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>React-PHP Component Demo - Home</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      min-height: 100vh;
-    }
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 30px;
-      border-radius: 15px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    }
-    h1 {
+<?php
+$pageTitle = "React-PHP Component Demo - Home";
+include 'header.php';
+?>
+
+<style>
+  .content {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    min-height: calc(100vh - 140px);
+    padding: 20px;
+  }
+
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  }
+    .main-title {
       text-align: center;
       font-size: 2.5em;
       margin-bottom: 10px;
@@ -101,10 +101,9 @@
       font-size: 0.9em;
     }
   </style>
-</head>
-<body>
-  <div class="container">
-    <h1>🧩 React-PHP Component Demo</h1>
+
+<div class="container">
+    <h1 class="main-title">🧩 React-PHP Component Demo</h1>
     <p class="subtitle">Interactive showcase of React components integrated with PHP</p>
 
     <div class="section">
@@ -144,23 +143,6 @@
     </div>
 
     <div class="section">
-      <h2>🎯 Basic Components</h2>
-      <div class="grid">
-        <div class="card">
-          <h3>👶 Hello Only</h3>
-          <p>Minimal Hello component without parent wrapper.</p>
-          <a href="hello-only.php">View Demo →</a>
-        </div>
-
-        <div class="card">
-          <h3>📈 Performance</h3>
-          <p>Performance comparison between different loading strategies.</p>
-          <a href="performance-comparison.php">View Demo →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
       <h2>🔍 Debug Tools</h2>
       <div class="grid">
         <div class="card debug">
@@ -174,6 +156,12 @@
           <p>Basic JavaScript and discovery system connectivity test.</p>
           <a href="simple-debug.html">Debug →</a>
         </div>
+
+        <div class="card">
+          <h3>📈 Performance</h3>
+          <p>Performance comparison between different loading strategies.</p>
+          <a href="performance-comparison.php">View Demo →</a>
+        </div>
       </div>
     </div>
 
@@ -181,6 +169,6 @@
       <p>💡 <strong>Tip:</strong> Open browser developer tools to see console logs and component loading details</p>
       <p>🌟 Each demo showcases different aspects of React-PHP integration and component discovery</p>
     </div>
-  </div>
-</body>
-</html>
+</div>
+
+<?php include 'footer.php'; ?>

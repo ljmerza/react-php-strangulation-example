@@ -1,37 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Composed Components Demo</title>
-  <script type="module" src="dist/discover.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      background: #f5f5f5;
-    }
-    .demo-section {
-      margin: 30px 0;
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    .demo-section h2 {
-      color: #333;
-      border-bottom: 2px solid #007bff;
-      padding-bottom: 10px;
-    }
-    .section-description {
-      color: #666;
-      margin-bottom: 20px;
-      font-style: italic;
-    }
-  </style>
-</head>
-<body>
+<?php
+$pageTitle = "Composed Components Demo";
+include 'header.php';
+?>
 
-<h1>🧩 Composed Components Demo</h1>
-<p>This page demonstrates complex, composed React components that are automatically discovered and loaded.</p>
+<div class="container">
+  <h1>🧩 Composed Components Demo</h1>
+  <p>This page demonstrates complex, composed React components that are automatically discovered and loaded.</p>
 
 <div class="demo-section">
   <h2>📝 Dynamic Form Composer</h2>
@@ -147,130 +121,35 @@
     Sortable, paginated data table with custom rendering and row interactions.
   </div>
 
-  <data-table id="main-data-table"
-    data-props='{
-      "sortable": true,
-      "paginated": true,
-      "pageSize": 5,
-      "data": [
-        {"id": 1, "name": "Alice Johnson", "email": "alice@example.com", "role": "Admin", "status": "Active", "joined": "2023-01-15"},
-        {"id": 2, "name": "Bob Smith", "email": "bob@example.com", "role": "Editor", "status": "Active", "joined": "2023-02-20"},
-        {"id": 3, "name": "Carol Davis", "email": "carol@example.com", "role": "Viewer", "status": "Inactive", "joined": "2023-03-10"},
-        {"id": 4, "name": "David Wilson", "email": "david@example.com", "role": "Admin", "status": "Active", "joined": "2023-04-05"},
-        {"id": 5, "name": "Eva Brown", "email": "eva@example.com", "role": "Editor", "status": "Active", "joined": "2023-05-12"},
-        {"id": 6, "name": "Frank Miller", "email": "frank@example.com", "role": "Viewer", "status": "Active", "joined": "2023-06-18"},
-        {"id": 7, "name": "Grace Lee", "email": "grace@example.com", "role": "Admin", "status": "Inactive", "joined": "2023-07-22"},
-        {"id": 8, "name": "Henry Taylor", "email": "henry@example.com", "role": "Editor", "status": "Active", "joined": "2023-08-30"},
-        {"id": 9, "name": "Ivy Chen", "email": "ivy@example.com", "role": "Viewer", "status": "Active", "joined": "2023-09-14"},
-        {"id": 10, "name": "Jack Robinson", "email": "jack@example.com", "role": "Admin", "status": "Active", "joined": "2023-10-01"}
-      ],
-      "columns": [
-        {"key": "name", "label": "Name"},
-        {"key": "email", "label": "Email"},
-        {"key": "role", "label": "Role"},
-        {"key": "status", "label": "Status"},
-        {"key": "joined", "label": "Joined"}
-      ]
-    }'
-  ></data-table>
-</div>
-
-<div class="demo-section">
-  <h2>🔧 Component Discovery Status</h2>
-  <div class="section-description">
-    Live view of which composed components are loaded and available.
-  </div>
-
-  <div id="discovery-status" style="background: #f8f9fa; padding: 15px; border-radius: 4px; font-family: monospace;">
-    Loading discovery status...
-  </div>
-
-  <div style="margin-top: 15px;">
-    <button onclick="refreshDiscoveryStatus()">Refresh Status</button>
-    <button onclick="showComponentDetails()">Show Component Details</button>
-  </div>
+  <data-table
+    id="main-data-table"
+    sortable="true"
+    paginated="true"
+    page-size="5"
+    empty-message="No data available"
+    data='[
+      {"id": 1, "name": "Alice Johnson", "email": "alice@example.com", "role": "Admin", "status": "Active", "joined": "2023-01-15"},
+      {"id": 2, "name": "Bob Smith", "email": "bob@example.com", "role": "Editor", "status": "Active", "joined": "2023-02-20"},
+      {"id": 3, "name": "Carol Davis", "email": "carol@example.com", "role": "Viewer", "status": "Inactive", "joined": "2023-03-10"},
+      {"id": 4, "name": "David Wilson", "email": "david@example.com", "role": "Admin", "status": "Active", "joined": "2023-04-05"},
+      {"id": 5, "name": "Eva Brown", "email": "eva@example.com", "role": "Editor", "status": "Active", "joined": "2023-05-12"},
+      {"id": 6, "name": "Frank Miller", "email": "frank@example.com", "role": "Viewer", "status": "Active", "joined": "2023-06-18"},
+      {"id": 7, "name": "Grace Lee", "email": "grace@example.com", "role": "Admin", "status": "Inactive", "joined": "2023-07-22"},
+      {"id": 8, "name": "Henry Taylor", "email": "henry@example.com", "role": "Editor", "status": "Active", "joined": "2023-08-30"},
+      {"id": 9, "name": "Ivy Chen", "email": "ivy@example.com", "role": "Viewer", "status": "Active", "joined": "2023-09-14"},
+      {"id": 10, "name": "Jack Robinson", "email": "jack@example.com", "role": "Admin", "status": "Active", "joined": "2023-10-01"}
+    ]'
+    columns='[
+      {"key": "name", "label": "Name"},
+      {"key": "email", "label": "Email"},
+      {"key": "role", "label": "Role"},
+      {"key": "status", "label": "Status"},
+      {"key": "joined", "label": "Joined"}
+    ]'>
+  </data-table>
 </div>
 
 <script>
-  // Default table data
-  const defaultTableData = [
-    {"id": 1, "name": "Alice Johnson", "email": "alice@example.com", "role": "Admin", "status": "Active", "joined": "2023-01-15"},
-    {"id": 2, "name": "Bob Smith", "email": "bob@example.com", "role": "Editor", "status": "Active", "joined": "2023-02-20"},
-    {"id": 3, "name": "Carol Davis", "email": "carol@example.com", "role": "Viewer", "status": "Inactive", "joined": "2023-03-10"},
-    {"id": 4, "name": "David Wilson", "email": "david@example.com", "role": "Admin", "status": "Active", "joined": "2023-04-05"},
-    {"id": 5, "name": "Eva Brown", "email": "eva@example.com", "role": "Editor", "status": "Active", "joined": "2023-05-12"},
-    {"id": 6, "name": "Frank Miller", "email": "frank@example.com", "role": "Viewer", "status": "Active", "joined": "2023-06-18"},
-    {"id": 7, "name": "Grace Lee", "email": "grace@example.com", "role": "Admin", "status": "Inactive", "joined": "2023-07-22"},
-    {"id": 8, "name": "Henry Taylor", "email": "henry@example.com", "role": "Editor", "status": "Active", "joined": "2023-08-30"},
-    {"id": 9, "name": "Ivy Chen", "email": "ivy@example.com", "role": "Viewer", "status": "Active", "joined": "2023-09-14"},
-    {"id": 10, "name": "Jack Robinson", "email": "jack@example.com", "role": "Admin", "status": "Active", "joined": "2023-10-01"}
-  ];
-
-  const tableColumns = [
-    {"key": "name", "label": "Name"},
-    {"key": "email", "label": "Email"},
-    {"key": "role", "label": "Role"},
-    {"key": "status", "label": "Status"},
-    {"key": "joined", "label": "Joined"}
-  ];
-
-  let currentTableData = [...defaultTableData];
-
-  // DataTable configuration functions
-  function updateDataTable() {
-    const table = document.getElementById('main-data-table');
-    if (!table) return;
-
-    const sortable = document.getElementById('dt-sortable').checked;
-    const paginated = document.getElementById('dt-paginated').checked;
-    const pageSize = parseInt(document.getElementById('dt-pageSize').value);
-    const emptyMessage = document.getElementById('dt-emptyMessage').value;
-
-    const props = {
-      data: currentTableData,
-      columns: tableColumns,
-      sortable: sortable,
-      paginated: paginated,
-      pageSize: pageSize,
-      emptyMessage: emptyMessage
-    };
-
-    table.setAttribute('data-props', JSON.stringify(props));
-  }
-
-  function clearTableData() {
-    currentTableData = [];
-    updateDataTable();
-  }
-
-  function resetTableData() {
-    currentTableData = [...defaultTableData];
-    updateDataTable();
-  }
-
-  function addTableRow() {
-    const names = ['John Doe', 'Jane Smith', 'Mike Johnson', 'Sarah Wilson', 'Tom Brown', 'Lisa Davis'];
-    const roles = ['Admin', 'Editor', 'Viewer'];
-    const statuses = ['Active', 'Inactive'];
-
-    const randomName = names[Math.floor(Math.random() * names.length)];
-    const randomRole = roles[Math.floor(Math.random() * roles.length)];
-    const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
-    const randomId = Math.max(...currentTableData.map(r => r.id), 0) + 1;
-
-    const newRow = {
-      id: randomId,
-      name: randomName,
-      email: randomName.toLowerCase().replace(' ', '.') + '@example.com',
-      role: randomRole,
-      status: randomStatus,
-      joined: new Date().toISOString().split('T')[0]
-    };
-
-    currentTableData.push(newRow);
-    updateDataTable();
-  }
-
   // Form submission handler
   document.addEventListener('web-component-registered', () => {
     // Set up form handling after components are registered
@@ -286,69 +165,10 @@
           console.log('Field changed:', e.detail);
         });
       }
-
-      // Data table row clicks
-      const dataTable = document.querySelector('data-table');
-      if (dataTable) {
-        dataTable.addEventListener('row-clicked', (e) => {
-          console.log('Row clicked:', e.detail);
-          alert(`Clicked user: ${e.detail.row.name}`);
-        });
-      }
     }, 500);
-  });
-
-  // Discovery status functions
-  function refreshDiscoveryStatus() {
-    const statusDiv = document.getElementById('discovery-status');
-
-    if (window.componentDiscovery) {
-      const stats = window.componentDiscovery.getStats();
-      const composedComponents = stats.components.filter(c =>
-        c.tagName.includes('form-composer') ||
-        c.tagName.includes('card-widget') ||
-        c.tagName.includes('data-table')
-      );
-
-      statusDiv.innerHTML = `
-📊 Discovery Statistics:
-• Total components available: ${stats.totalComponents}
-• Components loaded: ${stats.loadedComponents}
-• Composed components: ${composedComponents.length}
-
-🧩 Composed Components Status:
-${composedComponents.map(c =>
-  `• ${c.tagName}: ${c.loaded ? '✅ Loaded' : '⏸️ Available'}`
-).join('\n')}
-
-💾 Performance:
-${stats.performance.bandwidthSavings}
-      `.trim();
-    } else {
-      statusDiv.innerHTML = '❌ Discovery system not available';
-    }
-  }
-
-  function showComponentDetails() {
-    if (window.componentDiscovery) {
-      const components = window.componentDiscovery.listAvailable();
-      const details = components.map(name => {
-        const info = window.componentDiscovery.getComponentInfo(name);
-        return `${name}: ${info?.loaded ? 'LOADED' : 'available'}`;
-      }).join('\n');
-
-      alert(`Available Components:\n\n${details}`);
-    }
-  }
-
-  // Auto-refresh status when page loads
-  window.addEventListener('load', () => {
-    setTimeout(refreshDiscoveryStatus, 1000);
-
-    // Refresh every 5 seconds to show dynamic loading
-    setInterval(refreshDiscoveryStatus, 5000);
   });
 </script>
 
-</body>
-</html>
+</div>
+
+<?php include 'footer.php'; ?>

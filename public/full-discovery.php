@@ -1,34 +1,27 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Full Discovery System Demo</title>
-  <script type="module" src="dist/discover.js"></script>
-  <style>
-    .demo-section {
-      margin: 20px 0;
-      padding: 15px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    .controls {
-      margin: 10px 0;
-    }
-    button {
-      margin: 5px;
-      padding: 8px 16px;
-    }
-    .stats {
-      background: #f5f5f5;
-      padding: 10px;
-      margin: 10px 0;
-      font-family: monospace;
-      white-space: pre-wrap;
-    }
-  </style>
-</head>
-<body>
+<?php
+$pageTitle = "Full Discovery System Demo";
+include 'header.php';
+?>
 
-<h1>Component Discovery System Demo</h1>
+<style>
+  .controls {
+    margin: 10px 0;
+  }
+  button {
+    margin: 5px;
+    padding: 8px 16px;
+  }
+  .stats {
+    background: #f5f5f5;
+    padding: 10px;
+    margin: 10px 0;
+    font-family: monospace;
+    white-space: pre-wrap;
+  }
+</style>
+
+<div class="container">
+  <h1>Component Discovery System Demo</h1>
 
 <div class="demo-section">
   <h3>📝 PHP Input Demo</h3>
@@ -150,5 +143,6 @@
   });
 </script>
 
-</body>
-</html>
+</div>
+
+<?php include 'footer.php'; ?>
