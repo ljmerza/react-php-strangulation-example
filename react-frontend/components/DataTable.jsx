@@ -1,9 +1,5 @@
 import React, { useState, useMemo } from 'react';
 import styles from './DataTable.module.css';
-import cssText from './DataTable.module.css?inline';
-
-// Export CSS for web component registration
-export const datatableCSS = cssText;
 
 export default function DataTable({
   data = [],

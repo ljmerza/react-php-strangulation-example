@@ -1,9 +1,5 @@
 import React from 'react';
 import styles from './CardHeader.module.css';
-import cssText from './CardHeader.module.css?inline';
-
-// Export CSS for web component registration
-export const cardheaderwidgetCSS = cssText;
 
 export default function CardHeader({
   title = '',

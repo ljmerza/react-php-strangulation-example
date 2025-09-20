@@ -1,6 +1,6 @@
 // Vite Plugin for React-PHP Component System
 import path from 'path';
-import { writeFileSync, readFileSync } from 'fs';
+import { writeFileSync, readFileSync, existsSync } from 'fs';
 
 export function reactPhpComponents(options = {}) {
   const {
@@ -21,6 +21,42 @@ export function reactPhpComponents(options = {}) {
 
     buildStart() {
       console.log('🚀 React-PHP Component System: Starting build...');
+    },
+
+    transform(code, id) {
+      // Auto-inject CSS exports for component files
+      if (id.endsWith('.jsx') && id.includes('/components/')) {
+        // Check if corresponding .module.css file exists
+        const cssPath = id.replace('.jsx', '.module.css');
+
+        if (existsSync(cssPath)) {
+          const componentName = path.basename(id, '.jsx');
+
+          // Generate tag name (Card → card-widget, Hello → hello-widget)
+          const tagName = componentName === 'DataTable'
+            ? 'data-table'
+            : `${componentName.toLowerCase()}-widget`;
+
+          // Create CSS export name (card-widget → cardwidgetCSS)
+          const exportName = `${tagName.replace('-', '')}CSS`;
+
+          // Check if CSS export already exists to avoid duplication
+          if (!code.includes(`export const ${exportName}`)) {
+            const cssImportPath = `./${componentName}.module.css?inline`;
+
+            // Add CSS import and export
+            const cssExport = `
+// Auto-generated CSS export
+import ${exportName}Text from '${cssImportPath}';
+export const ${exportName} = ${exportName}Text;`;
+
+            console.log(`🎨 Auto-injecting CSS export: ${exportName} for ${componentName}`);
+            return code + cssExport;
+          }
+        }
+      }
+
+      return null; // No transformation needed
     },
 
     writeBundle(options, bundle) {

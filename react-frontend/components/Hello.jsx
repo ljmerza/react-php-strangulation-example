@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Hello.module.css';
-import cssText from './Hello.module.css?inline';
-
-// Export CSS for web component registration
-export const hellowidgetCSS = cssText;
 
 export default function Hello({ name = "World", onInputChange }) {
   const [value, setValue] = useState(name);

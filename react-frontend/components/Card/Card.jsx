@@ -1,9 +1,5 @@
 import React from 'react';
 import styles from './Card.module.css';
-import cssText from './Card.module.css?inline';
-
-// Export CSS for web component registration
-export const cardwidgetCSS = cssText;
 
 export default function Card({
   variant = 'default',
