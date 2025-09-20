@@ -1,0 +1,1 @@
+import{j as t}from"../discover.js";import"./index-BbjoSW55.js";function n({padding:a=!1,className:d="",children:s=""}){const o=`card-body ${a?"with-padding":""} ${d}`;return t.jsx("div",{className:o,children:s&&t.jsx("div",{dangerouslySetInnerHTML:{__html:s}})})}export{n as default};

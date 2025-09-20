@@ -62,10 +62,10 @@ export function registerReactComponent(tagName, Component) {
       return [
         'data-props',
         'sortable', 'paginated', 'page-size', 'empty-message', 'data', 'columns',  // DataTable
-        'title', 'submit-label', 'reset-label',                                     // FormComposer
-        'name', 'label', 'type', 'required', 'placeholder', 'value',              // FormField
-        'disabled',                                                                 // FormSubmit
-        'variant', 'className'                                                     // Common props
+        'title', 'subtitle',                                                       // CardHeader
+        'padding', 'align',                                                        // CardBody, CardFooter
+        'variant', 'className',                                                    // Common props
+        'name'                                                                     // Hello widget
       ];
     }
 

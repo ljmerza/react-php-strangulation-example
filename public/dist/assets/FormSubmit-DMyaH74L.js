@@ -1,1 +1,0 @@
-import{j as s}from"../discover.js";import"./index-BtKkNgeU.js";function n({children:m="Submit",type:r="primary",disabled:t=!1,onClick:i,className:o=""}){const a=`form-submit ${r} ${t?"disabled":""} ${o}`;return s.jsx("div",{className:"form-submit-container",children:s.jsx("button",{type:"submit",className:a,disabled:t,onClick:i,children:m})})}export{n as default};

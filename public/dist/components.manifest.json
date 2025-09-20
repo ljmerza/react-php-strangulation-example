@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "components": {
     "hello-widget": {
-      "path": "./assets/Hello-DeKhHNnA.js",
+      "path": "./assets/Hello-DYRiL76P.js",
       "version": "1.0.0",
       "dependencies": [
         "react",
@@ -15,75 +15,68 @@
         "onInputChange": "function"
       }
     },
-    "form-composer": {
-      "path": "./assets/FormComposer-BiXrnn14.js",
+    "card-widget": {
+      "path": "./assets/Card-BbH25olj.js",
       "version": "1.0.0",
       "dependencies": [
         "react",
         "react-dom"
       ],
-      "description": "Dynamic form builder with validation and field composition",
-      "category": "composed",
+      "description": "Main composable card component",
+      "category": "card",
       "props": {
-        "title": "string",
-        "fields": "array",
-        "initialData": "object",
-        "onSubmit": "function",
-        "onFieldChange": "function",
-        "submitLabel": "string",
-        "resetLabel": "string"
-      },
-      "composition": [
-        "FormField",
-        "FormSubmit"
-      ],
-      "features": [
-        "validation",
-        "dynamic-fields",
-        "form-state"
-      ]
-    },
-    "form-field": {
-      "path": "./assets/FormField-DzpWSSAm.js",
-      "version": "1.0.0",
-      "dependencies": [
-        "react",
-        "react-dom"
-      ],
-      "description": "Individual form field component with validation",
-      "category": "form",
-      "props": {
-        "name": "string",
-        "label": "string",
-        "type": "string",
-        "required": "boolean",
-        "placeholder": "string",
-        "value": "string",
-        "options": "array",
-        "onChange": "function",
+        "variant": "string",
         "className": "string",
         "children": "node"
       }
     },
-    "form-submit": {
-      "path": "./assets/FormSubmit-DMyaH74L.js",
+    "cardheader-widget": {
+      "path": "./assets/CardHeader-BMUHTTTL.js",
       "version": "1.0.0",
       "dependencies": [
         "react",
         "react-dom"
       ],
-      "description": "Form submit button component",
-      "category": "form",
+      "description": "Card header component with title and subtitle",
+      "category": "card",
       "props": {
-        "children": "string",
-        "type": "string",
-        "disabled": "boolean",
-        "onClick": "function",
+        "title": "string",
+        "subtitle": "string",
         "className": "string"
       }
     },
+    "cardbody-widget": {
+      "path": "./assets/CardBody-tcp0ectU.js",
+      "version": "1.0.0",
+      "dependencies": [
+        "react",
+        "react-dom"
+      ],
+      "description": "Card body component with optional padding",
+      "category": "card",
+      "props": {
+        "padding": "boolean",
+        "className": "string",
+        "children": "node"
+      }
+    },
+    "cardfooter-widget": {
+      "path": "./assets/CardFooter-Dv07Rvvc.js",
+      "version": "1.0.0",
+      "dependencies": [
+        "react",
+        "react-dom"
+      ],
+      "description": "Card footer component with alignment options",
+      "category": "card",
+      "props": {
+        "align": "string",
+        "className": "string",
+        "children": "node"
+      }
+    },
     "data-table": {
-      "path": "./assets/DataTable-B5RDhaJE.js",
+      "path": "./assets/DataTable-B_K1FErB.js",
       "version": "1.0.0",
       "dependencies": [
         "react",

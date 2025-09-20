@@ -8,71 +8,47 @@ include 'header.php';
   <p>This page demonstrates complex, composed React components that are automatically discovered and loaded.</p>
 
 <div class="demo-section">
-  <h2>📝 Dynamic Form Composer</h2>
+  <h2>🃏 Composable Card Components</h2>
   <div class="section-description">
-    A flexible form builder that composes multiple field types with validation and real-time data binding.
+    Simple, clean card composition using individual HTML components that work together.
   </div>
 
-  <form-composer title="User Registration Form">
-    <form-field
-      name="firstName"
-      label="First Name"
-      type="text"
-      required
-      placeholder="Enter your first name">
-    </form-field>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+    <card-widget variant="primary">
+      <cardheader-widget title="Welcome Card" subtitle="Getting started"></cardheader-widget>
+      <cardbody-widget padding="true">
+        <p>This is a composable card built with individual components. Each part is a separate web component that renders cleanly.</p>
+        <p>✅ Clean HTML structure<br>✅ Individual attributes<br>✅ Composable pattern</p>
+      </cardbody-widget>
+      <cardfooter-widget align="right">
+        <button onclick="alert('Primary card action!')">Get Started</button>
+      </cardfooter-widget>
+    </card-widget>
 
-    <form-field
-      name="lastName"
-      label="Last Name"
-      type="text"
-      required
-      placeholder="Enter your last name">
-    </form-field>
+    <card-widget variant="warning">
+      <cardheader-widget title="Alert Notice"></cardheader-widget>
+      <cardbody-widget>
+        <p>⚠️ This demonstrates the composable pattern without complex logic. Simple and clean!</p>
+      </cardbody-widget>
+      <cardfooter-widget align="center">
+        <button onclick="alert('Warning acknowledged!')">Acknowledge</button>
+      </cardfooter-widget>
+    </card-widget>
 
-    <form-field
-      name="email"
-      label="Email Address"
-      type="email"
-      required
-      placeholder="user@example.com">
-    </form-field>
-
-    <form-field
-      name="age"
-      label="Age"
-      type="number"
-      placeholder="Enter your age">
-    </form-field>
-
-    <form-field
-      name="country"
-      label="Country"
-      type="select"
-      required
-      placeholder="Select your country">
-      <option value="us">United States</option>
-      <option value="ca">Canada</option>
-      <option value="uk">United Kingdom</option>
-      <option value="de">Germany</option>
-      <option value="fr">France</option>
-    </form-field>
-
-    <form-field
-      name="bio"
-      label="Bio"
-      type="textarea"
-      placeholder="Tell us about yourself...">
-    </form-field>
-
-    <form-field
-      name="newsletter"
-      label="Subscribe to newsletter"
-      type="checkbox">
-    </form-field>
-
-    <form-submit>Register User</form-submit>
-  </form-composer>
+    <card-widget>
+      <cardheader-widget title="Individual Attributes" subtitle="DataTable approach"></cardheader-widget>
+      <cardbody-widget padding="true">
+        <p>Cards use individual HTML attributes just like the DataTable below:</p>
+        <code>variant="primary"</code><br>
+        <code>title="My Title"</code><br>
+        <code>padding="true"</code><br>
+        <code>align="center"</code>
+      </cardbody-widget>
+      <cardfooter-widget>
+        <em>Much cleaner than JSON!</em>
+      </cardfooter-widget>
+    </card-widget>
+  </div>
 </div>
 
 <div class="demo-section">
@@ -110,21 +86,16 @@ include 'header.php';
 </div>
 
 <script>
-  // Form submission handler
+  // Simple card interaction demo
   document.addEventListener('web-component-registered', () => {
-    // Set up form handling after components are registered
-    setTimeout(() => {
-      const formComposer = document.querySelector('form-composer');
-      if (formComposer) {
-        formComposer.addEventListener('form-submitted', (e) => {
-          console.log('Form submitted:', e.detail);
-          alert('Form submitted! Check console for data.');
-        });
+    console.log('Card components are ready!');
 
-        formComposer.addEventListener('field-changed', (e) => {
-          console.log('Field changed:', e.detail);
-        });
-      }
+    // Optional: Add click handlers for card interactions
+    setTimeout(() => {
+      const cards = document.querySelectorAll('card-widget');
+      cards.forEach((card, index) => {
+        console.log(`Card ${index + 1} loaded with variant: ${card.getAttribute('variant') || 'default'}`);
+      });
     }, 500);
   });
 </script>
@@ -137,23 +108,20 @@ include 'header.php';
 
   <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
     <div>
-      <h4>Composable Forms</h4>
+      <h4>Composable Cards</h4>
       <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; font-family: monospace; font-size: 12px;">
-        <code style="color: #0d6efd;">&lt;form-composer title="Contact Us"&gt;</code><br>
-        <code>&nbsp;&nbsp;&lt;form-field</code><br>
-        <code>&nbsp;&nbsp;&nbsp;&nbsp;name="email"</code><br>
-        <code>&nbsp;&nbsp;&nbsp;&nbsp;label="Email"</code><br>
-        <code>&nbsp;&nbsp;&nbsp;&nbsp;type="email"</code><br>
-        <code>&nbsp;&nbsp;&nbsp;&nbsp;required&gt;</code><br>
-        <code>&nbsp;&nbsp;&lt;/form-field&gt;</code><br><br>
-        <code>&nbsp;&nbsp;&lt;form-field</code><br>
-        <code>&nbsp;&nbsp;&nbsp;&nbsp;name="country"</code><br>
-        <code>&nbsp;&nbsp;&nbsp;&nbsp;type="select"&gt;</code><br>
-        <code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;option value="us"&gt;USA&lt;/option&gt;</code><br>
-        <code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;option value="ca"&gt;Canada&lt;/option&gt;</code><br>
-        <code>&nbsp;&nbsp;&lt;/form-field&gt;</code><br><br>
-        <code>&nbsp;&nbsp;&lt;form-submit&gt;Send&lt;/form-submit&gt;</code><br>
-        <code style="color: #0d6efd;">&lt;/form-composer&gt;</code>
+        <code style="color: #0d6efd;">&lt;card-widget variant="primary"&gt;</code><br>
+        <code>&nbsp;&nbsp;&lt;cardheader-widget</code><br>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;title="My Card"</code><br>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;subtitle="Description"&gt;</code><br>
+        <code>&nbsp;&nbsp;&lt;/cardheader-widget&gt;</code><br><br>
+        <code>&nbsp;&nbsp;&lt;cardbody-widget padding="true"&gt;</code><br>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;Card content here&lt;/p&gt;</code><br>
+        <code>&nbsp;&nbsp;&lt;/cardbody-widget&gt;</code><br><br>
+        <code>&nbsp;&nbsp;&lt;cardfooter-widget align="right"&gt;</code><br>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&lt;button&gt;Action&lt;/button&gt;</code><br>
+        <code>&nbsp;&nbsp;&lt;/cardfooter-widget&gt;</code><br>
+        <code style="color: #0d6efd;">&lt;/card-widget&gt;</code>
       </div>
     </div>
 
@@ -169,7 +137,7 @@ include 'header.php';
         <code>&nbsp;&nbsp;columns='[{"key": "name", "label": "Name"}]'&gt;</code><br>
         <code style="color: #0d6efd;">&lt;/data-table&gt;</code><br><br>
         <code style="color: #198754;">// Update individual attribute</code><br>
-        <code>table.setAttribute('page-size', '10');</code>
+        <code>card.setAttribute('variant', 'success');</code>
       </div>
     </div>
   </div>
@@ -178,9 +146,9 @@ include 'header.php';
     <strong>💡 Key Benefits:</strong>
     <ul style="margin: 10px 0;">
       <li>✅ <strong>Semantic HTML</strong> - Individual attributes instead of JSON blobs</li>
-      <li>✅ <strong>Composable Structure</strong> - Build forms like React components</li>
+      <li>✅ <strong>Composable Structure</strong> - Build cards like React components</li>
       <li>✅ <strong>Auto-discovery</strong> - Components load automatically when found in DOM</li>
-      <li>✅ <strong>On-demand Loading</strong> - Zero unused JavaScript</li>
+      <li>✅ <strong>Simple & Clean</strong> - Easy to understand and maintain</li>
     </ul>
   </div>
 </div>
