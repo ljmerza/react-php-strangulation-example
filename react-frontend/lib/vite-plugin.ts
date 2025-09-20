@@ -82,12 +82,12 @@ export function reactStrangler(options: ReactStranglerOptions = {}): Plugin {
 
     transform(code: string, id: string) {
       // Auto-inject CSS exports for component files
-      if (id.endsWith('.jsx') && id.includes('/components/')) {
+      if ((id.endsWith('.jsx') || id.endsWith('.tsx')) && id.includes('/components/')) {
         // Check if corresponding .module.css file exists
-        const cssPath = id.replace('.jsx', '.module.css');
+        const cssPath = id.replace(/\.(jsx|tsx)$/, '.module.css');
 
         if (existsSync(cssPath)) {
-          const componentName = path.basename(id, '.jsx');
+          const componentName = path.basename(id, path.extname(id));
 
           // Generate tag name (Card → card-widget, Hello → hello-widget)
           const tagName = componentName === 'DataTable'
@@ -142,7 +142,7 @@ export const ${exportName} = ${exportName}Text;`;
           if (chunk.type === 'chunk' && chunk.facadeModuleId) {
             const modulePath = chunk.facadeModuleId;
             const componentName = path.basename(modulePath, path.extname(modulePath));
-            if (modulePath.includes('/components/')) {
+            if (modulePath.includes('/components/') && /\.(jsx|tsx)$/.test(modulePath)) {
               assetMap[componentName] = `./${fileName}`;
 
               // Auto-generate component definition

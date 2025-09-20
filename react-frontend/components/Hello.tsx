@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Hello.module.css';
 
-export default function Hello({ name = "World", onInputChange }) {
+interface HelloProps {
+  name?: string;
+  onInputChange?: (value: string) => void;
+}
+
+export default function Hello({ name = "World", onInputChange }: HelloProps) {
   const [value, setValue] = useState(name);
 
   useEffect(() => {

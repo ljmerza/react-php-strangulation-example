@@ -122,11 +122,11 @@ export class ComponentRegistry {
 
   // Auto-discover components from file system (Vite glob)
   async discoverFromFiles(): Promise<string[]> {
-    const componentModules = import.meta.glob('../components/**/*.jsx');
+    const componentModules = import.meta.glob('../components/**/*.{jsx,tsx}');
     const discovered: string[] = [];
 
     for (const [path, moduleLoader] of Object.entries(componentModules)) {
-      const componentName = path.match(/\/([^/]+)\.jsx$/)?.[1];
+      const componentName = path.match(/\/([^/]+)\.(jsx|tsx)$/)?.[1];
       if (componentName) {
         const tagName = `${componentName.toLowerCase()}-widget`;
 
