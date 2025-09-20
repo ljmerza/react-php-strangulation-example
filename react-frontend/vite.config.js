@@ -74,11 +74,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        discover: path.resolve(__dirname, 'discover.js'), // New discovery system
-        hello: path.resolve(__dirname, 'hello.js'),
-        parent: path.resolve(__dirname, 'parent.js'),
-        all: path.resolve(__dirname, 'all.js'),
-        main: path.resolve(__dirname, 'index.js'), // Keep for backward compatibility
+        discover: path.resolve(__dirname, 'discover.js'), // Discovery system
       },
       output: {
         entryFileNames: '[name].js',

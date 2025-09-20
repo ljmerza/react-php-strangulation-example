@@ -62,7 +62,7 @@ export class ComponentRegistry {
 
   // Auto-discover components from file system (Vite glob)
   async discoverFromFiles() {
-    const componentModules = import.meta.glob('./components/*.jsx');
+    const componentModules = import.meta.glob('./components/**/*.jsx');
     const discovered = [];
 
     for (const [path, moduleLoader] of Object.entries(componentModules)) {

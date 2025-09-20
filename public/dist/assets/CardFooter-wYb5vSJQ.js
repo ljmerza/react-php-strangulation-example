@@ -1,0 +1,1 @@
+import{j as a}from"../discover.js";import"./index-BbjoSW55.js";function s({align:r="left",className:t="",children:o}){return a.jsx("div",{className:`card-footer align-${r} ${t}`.trim(),children:o})}export{s as default};

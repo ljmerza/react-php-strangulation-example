@@ -31,7 +31,7 @@
   <h3>➕ Dynamic Component Test:</h3>
   <p>Click to add components dynamically - they'll load on-demand!</p>
   <button onclick="addHelloComponent()">Add Hello Component</button>
-  <button onclick="addParentComponent()">Add Parent Component</button>
+  <button onclick="addCardComponent()">Add Card Component</button>
   <div id="dynamic-components"></div>
 </div>
 
@@ -70,36 +70,61 @@
 
     container.appendChild(wrapper);
 
-    // Update status
-    setTimeout(() => {
-      const statusDiv = document.getElementById('loading-status');
+    // Manually trigger component loading
+    setTimeout(async () => {
       if (window.componentDiscovery) {
-        const stats = window.componentDiscovery.getStats();
-        statusDiv.innerHTML += `<br><br><strong>📦 Component loaded on-demand!</strong><br>Now loaded: ${stats.loadedComponents} components`;
+        try {
+          await window.componentDiscovery.loadComponent('hello-widget');
+          const statusDiv = document.getElementById('loading-status');
+          const stats = window.componentDiscovery.getStats();
+          statusDiv.innerHTML += `<br><br><strong>📦 Component loaded on-demand!</strong><br>Now loaded: ${stats.loadedComponents} components`;
+        } catch (error) {
+          console.error('Failed to load hello-widget:', error);
+        }
       }
-    }, 500);
+    }, 100);
   }
 
-  function addParentComponent() {
+  function addCardComponent() {
     const container = document.getElementById('dynamic-components');
-    const parent = document.createElement('parent-widget');
+    const card = document.createElement('card-widget');
+    card.setAttribute('data-props', '{"variant": "primary"}');
+    card.innerHTML = `
+      <cardheader-widget data-props='{"title": "Dynamic Card", "subtitle": "Added on-demand"}'></cardheader-widget>
+      <cardbody-widget data-props='{"padding": true}'>
+        <p>This card was added dynamically and loaded on-demand!</p>
+      </cardbody-widget>
+      <cardfooter-widget data-props='{"align": "right"}'>
+        <button onclick="alert('Card button clicked!')">Action</button>
+      </cardfooter-widget>
+    `;
 
     const wrapper = document.createElement('div');
     wrapper.style.margin = '10px 0';
     wrapper.appendChild(document.createTextNode('Dynamically added: '));
-    wrapper.appendChild(parent);
+    wrapper.appendChild(card);
 
     container.appendChild(wrapper);
 
-    // Update status
-    setTimeout(() => {
-      const statusDiv = document.getElementById('loading-status');
+    // Manually trigger card components loading
+    setTimeout(async () => {
       if (window.componentDiscovery) {
-        const stats = window.componentDiscovery.getStats();
-        statusDiv.innerHTML += `<br><br><strong>📦 Component loaded on-demand!</strong><br>Now loaded: ${stats.loadedComponents} components`;
+        try {
+          await window.componentDiscovery.loadComponent('card-widget');
+          await window.componentDiscovery.loadComponent('cardheader-widget');
+          await window.componentDiscovery.loadComponent('cardbody-widget');
+          await window.componentDiscovery.loadComponent('cardfooter-widget');
+
+          const statusDiv = document.getElementById('loading-status');
+          const stats = window.componentDiscovery.getStats();
+          statusDiv.innerHTML += `<br><br><strong>📦 Card components loaded on-demand!</strong><br>Now loaded: ${stats.loadedComponents} components`;
+        } catch (error) {
+          console.error('Failed to load card components:', error);
+        }
       }
-    }, 500);
+    }, 100);
   }
+
 </script>
 
 </body>

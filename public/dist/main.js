@@ -1,1 +1,0 @@
-import{r}from"./assets/registerReactComponent-WbUqackn.js";/* empty css                          */import o from"./assets/Hello-cPe77Bd4.js";import t from"./assets/Parent-0kieMew3.js";import"./assets/index-8FW48s7X.js";import"./assets/Child-Mfpy6Qir.js";r("hello-widget",o);r("parent-widget",t);

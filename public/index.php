@@ -116,11 +116,6 @@
           <a href="composed-components-demo.php">View Demo →</a>
         </div>
 
-        <div class="card highlight">
-          <h3>🔧 PHP Composition</h3>
-          <p>PHP-friendly HTML composition using nested web components like card headers, bodies, and footers.</p>
-          <a href="php-composed-demo.php">View Demo →</a>
-        </div>
       </div>
     </div>
 
@@ -139,11 +134,6 @@
           <a href="hello-discovery.php">View Demo →</a>
         </div>
 
-        <div class="card">
-          <h3>🧱 Parent Discovery</h3>
-          <p>Parent component with nested children using discovery system.</p>
-          <a href="parent-only-discovery.php">View Demo →</a>
-        </div>
 
         <div class="card">
           <h3>📄 Empty Discovery</h3>
@@ -156,18 +146,6 @@
     <div class="section">
       <h2>🎯 Basic Components</h2>
       <div class="grid">
-        <div class="card">
-          <h3>👋 Hello Component</h3>
-          <p>Basic React component rendered as a web component.</p>
-          <a href="hello.php">View Demo →</a>
-        </div>
-
-        <div class="card">
-          <h3>🧱 Parent Component</h3>
-          <p>Parent component with nested child components demonstration.</p>
-          <a href="parent-only.php">View Demo →</a>
-        </div>
-
         <div class="card">
           <h3>👶 Hello Only</h3>
           <p>Minimal Hello component without parent wrapper.</p>

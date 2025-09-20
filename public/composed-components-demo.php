@@ -113,44 +113,30 @@
 <div class="demo-section">
   <h2>🃏 Flexible Card Layouts</h2>
   <div class="section-description">
-    Reusable card components with customizable headers, bodies, and footers.
+    Composable card components with separate header, body, and footer elements that work together.
   </div>
 
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-    <card-widget
-      data-props='{
-        "title": "Basic Card",
-        "subtitle": "Simple card example",
-        "variant": "primary"
-      }'
-    >
-      <p>This is a basic card with a title and subtitle. The content can be any HTML or React components.</p>
-      <button onclick="alert('Card button clicked!')">Action Button</button>
+    <card-widget data-props='{"variant": "primary"}'>
+      <cardheader-widget data-props='{"title": "Basic Card", "subtitle": "Simple card example"}'>
+      </cardheader-widget>
+      <cardbody-widget>
+        <p>This is a composable card with proper header, body structure. The content renders as actual HTML elements.</p>
+      </cardbody-widget>
+      <cardfooter-widget>
+        <button onclick="alert('Card button clicked!')">Action Button</button>
+      </cardfooter-widget>
     </card-widget>
 
-    <card-widget
-      data-props='{
-        "title": "Statistics Card",
-        "variant": "success"
-      }'
-    >
-      <div style="text-align: center;">
-        <div style="font-size: 2em; font-weight: bold; color: #28a745;">1,234</div>
-        <div style="color: #666;">Total Users</div>
-        <div style="margin-top: 10px; font-size: 0.9em; color: #28a745;">↑ 12% from last month</div>
-      </div>
-    </card-widget>
-
-    <card-widget
-      data-props='{
-        "title": "Warning Alert",
-        "variant": "warning"
-      }'
-    >
-      <p>⚠️ Your subscription expires in 3 days. Please renew to continue using premium features.</p>
-      <div style="margin-top: 15px;">
+    <card-widget data-props='{"variant": "warning"}'>
+      <cardheader-widget data-props='{"title": "Warning Alert"}'>
+      </cardheader-widget>
+      <cardbody-widget>
+        <p>⚠️ Your subscription expires in 3 days. Please renew to continue using premium features.</p>
+      </cardbody-widget>
+      <cardfooter-widget>
         <button style="background: #ffc107; border: none; padding: 8px 16px; border-radius: 4px;">Renew Now</button>
-      </div>
+      </cardfooter-widget>
     </card-widget>
   </div>
 </div>
@@ -161,7 +147,7 @@
     Sortable, paginated data table with custom rendering and row interactions.
   </div>
 
-  <data-table
+  <data-table id="main-data-table"
     data-props='{
       "sortable": true,
       "paginated": true,
@@ -206,6 +192,85 @@
 </div>
 
 <script>
+  // Default table data
+  const defaultTableData = [
+    {"id": 1, "name": "Alice Johnson", "email": "alice@example.com", "role": "Admin", "status": "Active", "joined": "2023-01-15"},
+    {"id": 2, "name": "Bob Smith", "email": "bob@example.com", "role": "Editor", "status": "Active", "joined": "2023-02-20"},
+    {"id": 3, "name": "Carol Davis", "email": "carol@example.com", "role": "Viewer", "status": "Inactive", "joined": "2023-03-10"},
+    {"id": 4, "name": "David Wilson", "email": "david@example.com", "role": "Admin", "status": "Active", "joined": "2023-04-05"},
+    {"id": 5, "name": "Eva Brown", "email": "eva@example.com", "role": "Editor", "status": "Active", "joined": "2023-05-12"},
+    {"id": 6, "name": "Frank Miller", "email": "frank@example.com", "role": "Viewer", "status": "Active", "joined": "2023-06-18"},
+    {"id": 7, "name": "Grace Lee", "email": "grace@example.com", "role": "Admin", "status": "Inactive", "joined": "2023-07-22"},
+    {"id": 8, "name": "Henry Taylor", "email": "henry@example.com", "role": "Editor", "status": "Active", "joined": "2023-08-30"},
+    {"id": 9, "name": "Ivy Chen", "email": "ivy@example.com", "role": "Viewer", "status": "Active", "joined": "2023-09-14"},
+    {"id": 10, "name": "Jack Robinson", "email": "jack@example.com", "role": "Admin", "status": "Active", "joined": "2023-10-01"}
+  ];
+
+  const tableColumns = [
+    {"key": "name", "label": "Name"},
+    {"key": "email", "label": "Email"},
+    {"key": "role", "label": "Role"},
+    {"key": "status", "label": "Status"},
+    {"key": "joined", "label": "Joined"}
+  ];
+
+  let currentTableData = [...defaultTableData];
+
+  // DataTable configuration functions
+  function updateDataTable() {
+    const table = document.getElementById('main-data-table');
+    if (!table) return;
+
+    const sortable = document.getElementById('dt-sortable').checked;
+    const paginated = document.getElementById('dt-paginated').checked;
+    const pageSize = parseInt(document.getElementById('dt-pageSize').value);
+    const emptyMessage = document.getElementById('dt-emptyMessage').value;
+
+    const props = {
+      data: currentTableData,
+      columns: tableColumns,
+      sortable: sortable,
+      paginated: paginated,
+      pageSize: pageSize,
+      emptyMessage: emptyMessage
+    };
+
+    table.setAttribute('data-props', JSON.stringify(props));
+  }
+
+  function clearTableData() {
+    currentTableData = [];
+    updateDataTable();
+  }
+
+  function resetTableData() {
+    currentTableData = [...defaultTableData];
+    updateDataTable();
+  }
+
+  function addTableRow() {
+    const names = ['John Doe', 'Jane Smith', 'Mike Johnson', 'Sarah Wilson', 'Tom Brown', 'Lisa Davis'];
+    const roles = ['Admin', 'Editor', 'Viewer'];
+    const statuses = ['Active', 'Inactive'];
+
+    const randomName = names[Math.floor(Math.random() * names.length)];
+    const randomRole = roles[Math.floor(Math.random() * roles.length)];
+    const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+    const randomId = Math.max(...currentTableData.map(r => r.id), 0) + 1;
+
+    const newRow = {
+      id: randomId,
+      name: randomName,
+      email: randomName.toLowerCase().replace(' ', '.') + '@example.com',
+      role: randomRole,
+      status: randomStatus,
+      joined: new Date().toISOString().split('T')[0]
+    };
+
+    currentTableData.push(newRow);
+    updateDataTable();
+  }
+
   // Form submission handler
   document.addEventListener('web-component-registered', () => {
     // Set up form handling after components are registered

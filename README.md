@@ -44,8 +44,8 @@ npm install
 npm run build
 
 # 4. Start PHP server
-cd ../public
-php -S localhost:8080
+cd public
+php -S 0.0.0.0:8080
 
 # 5. Visit the demos
 # http://localhost:8080 - Home page with all demos
@@ -62,18 +62,15 @@ Visit `http://localhost:8080` for the complete demo home page, or go directly to
 
 ### 🎯 Featured Demos
 - **[composed-components-demo.php](http://localhost:8080/composed-components-demo.php)** - Advanced composed components showcase
-- **[php-composed-demo.php](http://localhost:8080/php-composed-demo.php)** - PHP-friendly composition demo
 
 ### 📊 Discovery System Examples
 - **[full-discovery.php](http://localhost:8080/full-discovery.php)** - Complete discovery system demo
 - **[hello-discovery.php](http://localhost:8080/hello-discovery.php)** - Hello with discovery
-- **[parent-only-discovery.php](http://localhost:8080/parent-only-discovery.php)** - Parent with discovery
 - **[empty-discovery.php](http://localhost:8080/empty-discovery.php)** - Zero components (optimal performance)
 - **[performance-comparison.php](http://localhost:8080/performance-comparison.php)** - Performance comparison
 
 ### 📚 Basic Components
 - **[hello.php](http://localhost:8080/hello.php)** - Basic Hello component
-- **[parent-only.php](http://localhost:8080/parent-only.php)** - Parent with nested child
 - **[hello-only.php](http://localhost:8080/hello-only.php)** - Single component only
 
 ### 🔍 Debug Tools

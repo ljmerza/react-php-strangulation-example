@@ -31,17 +31,6 @@
 <h1>Component Discovery System Demo</h1>
 
 <div class="demo-section">
-  <h3>🔍 Discovery Controls</h3>
-  <div class="controls">
-    <button onclick="loadComponent('hello-widget')">Load Hello Component</button>
-    <button onclick="loadComponent('parent-widget')">Load Parent Component</button>
-    <button onclick="loadAllComponents()">Load All Components</button>
-    <button onclick="showStats()">Show Stats</button>
-  </div>
-  <div id="stats" class="stats"></div>
-</div>
-
-<div class="demo-section">
   <h3>📝 PHP Input Demo</h3>
   <label>Hello from PHP:
     <input type="text" id="phpInput" value="World" />
@@ -52,16 +41,21 @@
   <h3>⚛️ React Components (Auto-discovered)</h3>
   <hello-widget id="hello" data-props='{"name": "World"}'></hello-widget>
 
-  <div style="margin: 20px 0;">
-    <parent-widget></parent-widget>
-  </div>
 </div>
 
 <div class="demo-section">
   <h3>➕ Dynamic Component Loading</h3>
   <button onclick="addDynamicComponent()">Add Dynamic Hello Component</button>
-  <button onclick="addDynamicParent()">Add Dynamic Parent Component</button>
   <div id="dynamic-container"></div>
+</div>
+
+<div class="demo-section">
+  <h3>📊 Discovery System Stats</h3>
+  <div class="controls">
+    <button onclick="showStats()">Refresh Stats</button>
+    <button onclick="loadAllComponents()">Load All Components</button>
+  </div>
+  <div id="stats" class="stats">Initializing...</div>
 </div>
 
 <script>
@@ -133,24 +127,16 @@
     updateStats(`➕ Added dynamic component: ${id}`);
   }
 
-  function addDynamicParent() {
-    const container = document.getElementById('dynamic-container');
-    const newWidget = document.createElement('parent-widget');
-
-    const wrapper = document.createElement('div');
-    wrapper.style.margin = '10px 0';
-    wrapper.appendChild(document.createTextNode('Dynamic Parent: '));
-    wrapper.appendChild(newWidget);
-
-    container.appendChild(wrapper);
-    updateStats('➕ Added dynamic parent component');
-  }
 
   function updateStats(message) {
     const statsDiv = document.getElementById('stats');
-    const timestamp = new Date().toLocaleTimeString();
-    statsDiv.textContent += `[${timestamp}] ${message}\n`;
-    statsDiv.scrollTop = statsDiv.scrollHeight;
+    if (statsDiv) {
+      const timestamp = new Date().toLocaleTimeString();
+      statsDiv.textContent += `[${timestamp}] ${message}\n`;
+      statsDiv.scrollTop = statsDiv.scrollHeight;
+    } else {
+      console.log(`[Stats] ${message}`);
+    }
   }
 
   // Initialize stats on load
