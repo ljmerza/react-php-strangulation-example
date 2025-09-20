@@ -1,15 +1,77 @@
-import { registerReactComponent } from './registerReactComponent.jsx';
+import { registerReactComponent } from './registerReactComponent';
+import type { ComponentType } from 'react';
+
+interface ComponentEntry {
+  loader: () => Promise<any>;
+  metadata: ComponentMetadata;
+}
+
+interface ComponentMetadata {
+  loaded: boolean;
+  registeredAt: number;
+  loadedAt?: number;
+  source?: string;
+  path?: string;
+  autoDiscovered?: boolean;
+  version?: string;
+  description?: string;
+  props?: Record<string, string>;
+}
+
+interface ComponentInfo extends ComponentMetadata {
+  tagName: string;
+}
+
+interface LoadResult {
+  loaded: string[];
+  failed: Array<{ tagName: string; error: Error }>;
+}
+
+interface RegistryStats {
+  totalComponents: number;
+  loadedComponents: number;
+  unloadedComponents: number;
+  components: ComponentInfo[];
+  performance: PerformanceMetrics;
+}
+
+interface PerformanceMetrics {
+  loadedComponents: Array<{
+    name: string;
+    loadTime: number;
+    source?: string;
+  }>;
+  unloadedComponents: Array<{
+    name: string;
+    savedBandwidth: boolean;
+    source?: string;
+  }>;
+  totalLoadTime: number;
+  bandwidthSavings: string;
+}
+
+interface ComponentManifest {
+  components: Record<string, any>;
+}
+
+type RegistryEventType = 'manifest-loaded' | 'component-loaded' | 'component-loading' | 'component-load-error' | 'discovery-completed';
+
+interface RegistryEvent {
+  type: RegistryEventType;
+  data: any;
+  timestamp: number;
+}
+
+type RegistryObserver = (event: RegistryEvent) => void;
 
 export class ComponentRegistry {
-  constructor() {
-    this.components = new Map();
-    this.loadedComponents = new Set();
-    this.observers = [];
-    this.manifest = null;
-  }
+  private components = new Map<string, ComponentEntry>();
+  private loadedComponents = new Set<string>();
+  private observers: RegistryObserver[] = [];
+  private manifest: ComponentManifest | null = null;
 
   // Load component manifest
-  async loadManifest() {
+  async loadManifest(): Promise<ComponentManifest> {
     if (!this.manifest) {
       try {
         const response = await fetch('./components.manifest.json');
@@ -24,7 +86,7 @@ export class ComponentRegistry {
   }
 
   // Register a component loader
-  register(tagName, componentLoader, metadata = {}) {
+  register(tagName: string, componentLoader: () => Promise<any>, metadata: Partial<ComponentMetadata> = {}): void {
     this.components.set(tagName, {
       loader: componentLoader,
       metadata: {
@@ -33,19 +95,17 @@ export class ComponentRegistry {
         ...metadata
       }
     });
-    this.notifyObservers('component-registered', tagName);
-    return this;
   }
 
-  // Auto-discover components from manifest
-  async discoverFromManifest() {
+  // Auto-discover from manifest file
+  async discoverFromManifest(): Promise<string[]> {
     const manifest = await this.loadManifest();
-    const discovered = [];
+    const discovered: string[] = [];
 
-    for (const [tagName, config] of Object.entries(manifest.components)) {
+    Object.entries(manifest.components).forEach(([tagName, config]) => {
+      const componentLoader = () => import(config.path);
+
       if (!this.components.has(tagName)) {
-        // Create dynamic loader for component
-        const componentLoader = () => import(config.path);
         this.register(tagName, componentLoader, {
           version: config.version,
           description: config.description,
@@ -54,16 +114,16 @@ export class ComponentRegistry {
         });
         discovered.push(tagName);
       }
-    }
+    });
 
     this.notifyObservers('discovery-completed', { source: 'manifest', discovered });
     return discovered;
   }
 
   // Auto-discover components from file system (Vite glob)
-  async discoverFromFiles() {
+  async discoverFromFiles(): Promise<string[]> {
     const componentModules = import.meta.glob('../components/**/*.jsx');
-    const discovered = [];
+    const discovered: string[] = [];
 
     for (const [path, moduleLoader] of Object.entries(componentModules)) {
       const componentName = path.match(/\/([^/]+)\.jsx$/)?.[1];
@@ -86,13 +146,14 @@ export class ComponentRegistry {
   }
 
   // Discover components already in the DOM
-  discoverFromDOM() {
-    const customElements = document.querySelectorAll('*');
-    const discovered = new Set();
+  discoverFromDOM(): string[] {
+    const discovered = new Set<string>();
 
-    customElements.forEach(el => {
-      const tagName = el.tagName.toLowerCase();
-      if (tagName.includes('-')) {
+    // Find all custom elements (contain hyphen)
+    const customElements = document.querySelectorAll('*');
+    customElements.forEach(element => {
+      const tagName = element.tagName.toLowerCase();
+      if (tagName.includes('-') && this.components.has(tagName)) {
         discovered.add(tagName);
       }
     });
@@ -103,12 +164,12 @@ export class ComponentRegistry {
   }
 
   // Get list of all available components
-  getAvailableComponents() {
+  getAvailableComponents(): string[] {
     return Array.from(this.components.keys());
   }
 
   // Get component metadata
-  getComponentInfo(tagName) {
+  getComponentInfo(tagName: string): ComponentInfo | null {
     const component = this.components.get(tagName);
     if (component) {
       return {
@@ -121,7 +182,7 @@ export class ComponentRegistry {
   }
 
   // Load and register a specific component
-  async load(tagName) {
+  async load(tagName: string): Promise<void> {
     const componentEntry = this.components.get(tagName);
 
     if (!componentEntry) {
@@ -151,53 +212,57 @@ export class ComponentRegistry {
       this.notifyObservers('component-loaded', tagName);
     } catch (error) {
       this.notifyObservers('component-load-error', { tagName, error });
-      throw new Error(`Failed to load component ${tagName}: ${error.message}`);
+      throw error;
     }
   }
 
   // Load multiple components
-  async loadMultiple(tagNames) {
+  async loadMultiple(tagNames: string[]): Promise<LoadResult> {
     const results = await Promise.allSettled(
       tagNames.map(tagName => this.load(tagName))
     );
 
-    const loaded = [];
-    const failed = [];
+    const loaded: string[] = [];
+    const failed: Array<{ tagName: string; error: Error }> = [];
 
     results.forEach((result, index) => {
+      const tagName = tagNames[index];
       if (result.status === 'fulfilled') {
-        loaded.push(tagNames[index]);
+        loaded.push(tagName);
       } else {
-        failed.push({ tagName: tagNames[index], error: result.reason });
+        failed.push({
+          tagName,
+          error: result.reason instanceof Error ? result.reason : new Error(String(result.reason))
+        });
       }
     });
 
     return { loaded, failed };
   }
 
-  // Load all discovered components
-  async loadAll() {
-    const tagNames = this.getAvailableComponents();
-    return this.loadMultiple(tagNames);
+  // Load all available components
+  async loadAll(): Promise<LoadResult> {
+    const allComponents = this.getAvailableComponents();
+    return this.loadMultiple(allComponents);
   }
 
-  // Auto-load components found in DOM
-  async autoLoad() {
+  // Auto-load components found in current DOM
+  async autoLoad(): Promise<LoadResult> {
     const domComponents = this.discoverFromDOM();
-    const toLoad = domComponents.filter(tagName =>
-      this.components.has(tagName) && !this.loadedComponents.has(tagName)
-    );
+    const unloadedComponents = domComponents.filter(tagName => !this.loadedComponents.has(tagName));
 
-    if (toLoad.length > 0) {
-      return this.loadMultiple(toLoad);
+    if (unloadedComponents.length === 0) {
+      return { loaded: [], failed: [] };
     }
 
-    return { loaded: [], failed: [] };
+    return this.loadMultiple(unloadedComponents);
   }
 
-  // Observer pattern for events
-  subscribe(callback) {
+  // Subscribe to registry events
+  subscribe(callback: RegistryObserver): () => void {
     this.observers.push(callback);
+
+    // Return unsubscribe function
     return () => {
       const index = this.observers.indexOf(callback);
       if (index > -1) {
@@ -206,7 +271,7 @@ export class ComponentRegistry {
     };
   }
 
-  notifyObservers(eventType, data) {
+  private notifyObservers(eventType: RegistryEventType, data: any): void {
     this.observers.forEach(callback => {
       try {
         callback({ type: eventType, data, timestamp: Date.now() });
@@ -217,8 +282,8 @@ export class ComponentRegistry {
   }
 
   // Get registry statistics
-  getStats() {
-    const components = this.getAvailableComponents().map(tagName => this.getComponentInfo(tagName));
+  getStats(): RegistryStats {
+    const components = this.getAvailableComponents().map(tagName => this.getComponentInfo(tagName)!);
     return {
       totalComponents: this.components.size,
       loadedComponents: this.loadedComponents.size,
@@ -229,14 +294,14 @@ export class ComponentRegistry {
   }
 
   // Get performance metrics
-  getPerformanceMetrics(components) {
+  private getPerformanceMetrics(components: ComponentInfo[]): PerformanceMetrics {
     const loaded = components.filter(c => c.loaded);
     const unloaded = components.filter(c => !c.loaded);
 
     return {
       loadedComponents: loaded.map(c => ({
         name: c.tagName,
-        loadTime: c.loadedAt - c.registeredAt,
+        loadTime: (c.loadedAt || 0) - c.registeredAt,
         source: c.source
       })),
       unloadedComponents: unloaded.map(c => ({
@@ -244,7 +309,7 @@ export class ComponentRegistry {
         savedBandwidth: true,
         source: c.source
       })),
-      totalLoadTime: loaded.reduce((total, c) => total + (c.loadedAt - c.registeredAt), 0),
+      totalLoadTime: loaded.reduce((total, c) => total + ((c.loadedAt || 0) - c.registeredAt), 0),
       bandwidthSavings: unloaded.length > 0 ? `${unloaded.length} components not loaded` : 'All components loaded'
     };
   }

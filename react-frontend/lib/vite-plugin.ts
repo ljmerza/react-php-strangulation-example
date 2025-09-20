@@ -1,26 +1,61 @@
-// Vite Plugin for React-PHP Component System
+// Vite Plugin for React Strangler Pattern
 import path from 'path';
 import { writeFileSync, readFileSync, existsSync } from 'fs';
+import type { Plugin, ResolvedConfig } from 'vite';
 
-export function reactStrangler(options = {}) {
+export interface ReactStranglerOptions {
+  /** Output directory for built assets */
+  outputDir?: string;
+  /** Public directory for manifest copying */
+  publicDir?: string;
+  /** Discovery system entry point */
+  discoveryEntry?: string;
+}
+
+interface ComponentDefinition {
+  path: string;
+  version: string;
+  dependencies: string[];
+  description: string;
+  category: 'basic' | 'card' | 'composed';
+  props: Record<string, string>;
+}
+
+interface ComponentManifest {
+  version: string;
+  components: Record<string, ComponentDefinition>;
+  paths: {
+    base: string;
+    components: string;
+    dist: string;
+  };
+  metadata: {
+    created: string;
+    framework: string;
+    bundler: string;
+    plugin: string;
+  };
+}
+
+export function reactStrangler(options: ReactStranglerOptions = {}): Plugin {
   const {
     outputDir = '../public/dist',
     publicDir = '../public',
-    discoveryEntry = 'lib/discover.js'
+    discoveryEntry = 'lib/discover.ts'
   } = options;
 
-  let config;
+  let config: ResolvedConfig;
 
   return {
     name: 'react-strangler',
 
-    configResolved(resolvedConfig) {
+    configResolved(resolvedConfig: ResolvedConfig) {
       // Store config for later use
       config = resolvedConfig;
     },
 
     config(userConfig, { command }) {
-      // Auto-configure build settings for React-PHP components
+      // Auto-configure build settings for React Strangler components
       if (command === 'build') {
         return {
           build: {
@@ -42,10 +77,10 @@ export function reactStrangler(options = {}) {
     },
 
     buildStart() {
-      console.log('🚀 React-PHP Component System: Starting build...');
+      console.log('🚀 React Strangler: Starting build...');
     },
 
-    transform(code, id) {
+    transform(code: string, id: string) {
       // Auto-inject CSS exports for component files
       if (id.endsWith('.jsx') && id.includes('/components/')) {
         // Check if corresponding .module.css file exists
@@ -84,7 +119,7 @@ export const ${exportName} = ${exportName}Text;`;
     writeBundle(options, bundle) {
       try {
         // Auto-generate manifest from discovered components
-        const manifest = {
+        const manifest: ComponentManifest = {
           version: '1.0.0',
           components: {},
           paths: {
@@ -101,7 +136,7 @@ export const ${exportName} = ${exportName}Text;`;
         };
 
         // Find the actual built asset paths and auto-generate component definitions
-        const assetMap = {};
+        const assetMap: Record<string, string> = {};
         Object.keys(bundle).forEach(fileName => {
           const chunk = bundle[fileName];
           if (chunk.type === 'chunk' && chunk.facadeModuleId) {
@@ -115,7 +150,8 @@ export const ${exportName} = ${exportName}Text;`;
                 ? 'data-table'
                 : `${componentName.toLowerCase()}-widget`;
 
-              const category = componentName === 'Hello' ? 'basic'
+              const category: ComponentDefinition['category'] =
+                componentName === 'Hello' ? 'basic'
                 : componentName.includes('Card') ? 'card'
                 : 'composed';
 

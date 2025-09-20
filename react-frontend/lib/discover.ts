@@ -1,13 +1,24 @@
-import { componentRegistry } from './ComponentRegistry.js';
+import { componentRegistry } from './ComponentRegistry';
+
+interface LoadResult {
+  loaded: string[];
+  failed: Array<{ tagName: string; error: Error }>;
+}
+
+interface ComponentStats {
+  totalComponents: number;
+  loadedComponents: number;
+  unloadedComponents: number;
+  components: any[];
+  performance: any;
+}
 
 // Initialize the discovery system
 class ComponentDiscovery {
-  constructor() {
-    this.registry = componentRegistry;
-    this.initialized = false;
-  }
+  private registry = componentRegistry;
+  private initialized = false;
 
-  async init() {
+  async init(): Promise<void> {
     if (this.initialized) return;
 
     // Set up registry event listeners
@@ -37,7 +48,7 @@ class ComponentDiscovery {
   }
 
   // Auto-load components found in the current DOM
-  async autoLoad() {
+  async autoLoad(): Promise<LoadResult> {
     await this.init();
     const result = await this.registry.autoLoad();
 
@@ -53,7 +64,7 @@ class ComponentDiscovery {
   }
 
   // Load specific component on-demand
-  async loadComponent(tagName) {
+  async loadComponent(tagName: string): Promise<boolean> {
     await this.init();
     try {
       await this.registry.load(tagName);
@@ -66,7 +77,7 @@ class ComponentDiscovery {
   }
 
   // Load all available components
-  async loadAll() {
+  async loadAll(): Promise<LoadResult> {
     await this.init();
     const result = await this.registry.loadAll();
     console.debug('[ComponentDiscovery] Load all results:', result);
@@ -74,17 +85,17 @@ class ComponentDiscovery {
   }
 
   // Get component information
-  getComponentInfo(tagName) {
+  getComponentInfo(tagName: string) {
     return this.registry.getComponentInfo(tagName);
   }
 
   // Get registry statistics
-  getStats() {
+  getStats(): ComponentStats {
     return this.registry.getStats();
   }
 
   // List available components
-  listAvailable() {
+  listAvailable(): string[] {
     return this.registry.getAvailableComponents();
   }
 }
@@ -94,28 +105,31 @@ export const componentDiscovery = new ComponentDiscovery();
 
 // DOM mutation observer to auto-load components
 class ComponentObserver {
-  constructor(discovery) {
+  private discovery: ComponentDiscovery;
+  private observer: MutationObserver | null = null;
+  private processingQueue = new Set<string>();
+
+  constructor(discovery: ComponentDiscovery) {
     this.discovery = discovery;
-    this.observer = null;
-    this.processingQueue = new Set();
   }
 
-  start() {
+  start(): void {
     if (this.observer) return;
 
     this.observer = new MutationObserver((mutations) => {
-      const newElements = new Set();
+      const newElements = new Set<string>();
 
       mutations.forEach((mutation) => {
         mutation.addedNodes.forEach((node) => {
           if (node.nodeType === Node.ELEMENT_NODE) {
+            const element = node as Element;
             // Check if the added node is a custom element
-            if (node.tagName && node.tagName.includes('-')) {
-              newElements.add(node.tagName.toLowerCase());
+            if (element.tagName && element.tagName.includes('-')) {
+              newElements.add(element.tagName.toLowerCase());
             }
 
             // Check child elements
-            const customElements = node.querySelectorAll?.('*[tagName*="-"], *[is]');
+            const customElements = element.querySelectorAll?.('*[tagName*="-"], *[is]');
             customElements?.forEach(el => {
               if (el.tagName.includes('-')) {
                 newElements.add(el.tagName.toLowerCase());
@@ -142,7 +156,7 @@ class ComponentObserver {
     console.debug('[ComponentObserver] Started watching for new components');
   }
 
-  async processComponent(tagName) {
+  private async processComponent(tagName: string): Promise<void> {
     try {
       // Check if component is in registry but not loaded
       const info = this.discovery.getComponentInfo(tagName);
@@ -157,7 +171,7 @@ class ComponentObserver {
     }
   }
 
-  stop() {
+  stop(): void {
     if (this.observer) {
       this.observer.disconnect();
       this.observer = null;
@@ -173,7 +187,7 @@ if (document.readyState === 'loading') {
   initializeDiscovery();
 }
 
-async function initializeDiscovery() {
+async function initializeDiscovery(): Promise<void> {
   console.debug('[ComponentDiscovery] Starting auto-discovery...');
 
   // Initialize discovery system
@@ -187,7 +201,7 @@ async function initializeDiscovery() {
   observer.start();
 
   // Make discovery available globally for debugging
-  window.componentDiscovery = componentDiscovery;
+  (window as any).componentDiscovery = componentDiscovery;
 
   console.debug('[ComponentDiscovery] System ready. Available commands:');
   console.debug('- window.componentDiscovery.listAvailable()');

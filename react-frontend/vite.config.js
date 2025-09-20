@@ -1,7 +1,7 @@
 // react-frontend/vite.config.js
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { reactStrangler } from './lib/vite-plugin.js';
+import { reactStrangler } from './lib/vite-plugin.ts';
 
 export default defineConfig({
   server: {
