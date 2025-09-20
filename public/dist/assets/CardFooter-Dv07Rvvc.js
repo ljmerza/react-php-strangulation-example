@@ -1,1 +1,0 @@
-import{j as o}from"../discover.js";import"./index-BbjoSW55.js";function d({align:r="left",className:e="",children:t=""}){const s=`card-footer ${r} ${e}`;return o.jsx("div",{className:s,children:t&&o.jsx("div",{dangerouslySetInnerHTML:{__html:t}})})}export{d as default};

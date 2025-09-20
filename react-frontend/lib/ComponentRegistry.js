@@ -62,7 +62,7 @@ export class ComponentRegistry {
 
   // Auto-discover components from file system (Vite glob)
   async discoverFromFiles() {
-    const componentModules = import.meta.glob('./components/**/*.jsx');
+    const componentModules = import.meta.glob('../components/**/*.jsx');
     const discovered = [];
 
     for (const [path, moduleLoader] of Object.entries(componentModules)) {
@@ -138,7 +138,11 @@ export class ComponentRegistry {
       const module = await componentEntry.loader();
       const Component = module.default;
 
-      registerReactComponent(tagName, Component);
+      // Extract component CSS if available (exported as tagNameCSS)
+      const cssExportName = `${tagName.replace('-', '')}CSS`;
+      const componentCSS = module[cssExportName] || '';
+
+      registerReactComponent(tagName, Component, componentCSS);
       this.loadedComponents.add(tagName);
 
       componentEntry.metadata.loaded = true;

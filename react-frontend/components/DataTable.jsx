@@ -1,4 +1,9 @@
 import React, { useState, useMemo } from 'react';
+import styles from './DataTable.module.css';
+import cssText from './DataTable.module.css?inline';
+
+// Export CSS for web component registration
+export const datatableCSS = cssText;
 
 export default function DataTable({
   data = [],
@@ -51,11 +56,11 @@ export default function DataTable({
   };
 
   if (data.length === 0) {
-    return <div className="data-table-empty">{emptyMessage}</div>;
+    return <div className={styles.empty}>{emptyMessage}</div>;
   }
 
   return (
-    <div className="data-table">
+    <div className={styles.table}>
       <table>
         <thead>
           <tr>
@@ -65,12 +70,12 @@ export default function DataTable({
               return (
                 <th
                   key={column.key || index}
-                  className={sortable ? 'sortable' : ''}
+                  className={sortable ? styles.sortable : ''}
                   onClick={() => handleSort(column.key)}
                 >
                   {column.label || column.key}
                   {sortable && (
-                    <span className="sort-icon">
+                    <span className={styles.sortIcon}>
                       {getSortIcon(column.key)}
                     </span>
                   )}
@@ -83,7 +88,7 @@ export default function DataTable({
           {paginatedData.map((row, rowIndex) => (
             <tr
               key={rowIndex}
-              className={onRowClick ? 'clickable' : ''}
+              className={onRowClick ? styles.clickable : ''}
               onClick={() => onRowClick?.(row, rowIndex)}
             >
               {columns.map((column, colIndex) => {
@@ -104,7 +109,7 @@ export default function DataTable({
       </table>
 
       {paginated && totalPages > 1 && (
-        <div className="table-pagination">
+        <div className={styles.pagination}>
           <button
             disabled={currentPage === 1}
             onClick={() => setCurrentPage(1)}
@@ -118,7 +123,7 @@ export default function DataTable({
             ⬅️
           </button>
 
-          <span className="page-info">
+          <span className={styles.pageInfo}>
             Page {currentPage} of {totalPages} ({sortedData.length} total)
           </span>
 

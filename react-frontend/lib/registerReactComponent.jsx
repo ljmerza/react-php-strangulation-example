@@ -1,6 +1,4 @@
 import { createRoot } from 'react-dom/client';
-import cssText from './components.css?inline';
-import composedCssText from './composed-components.css?inline';
 
 // Registry to track registered components
 const registeredComponents = new Set();
@@ -55,7 +53,7 @@ function parseComponentAttributes(element) {
   return props;
 }
 
-export function registerReactComponent(tagName, Component) {
+export function registerReactComponent(tagName, Component, componentCSS = '') {
   class ReactCustomElement extends HTMLElement {
     static get observedAttributes() {
       // Observe common component attributes plus data-props for backward compatibility
@@ -82,10 +80,12 @@ export function registerReactComponent(tagName, Component) {
         // Isolate component in a shadow DOM but allow parent js to modify
         this.attachShadow({ mode: 'open' });
 
-        // Inject CSS into shadow DOM
-        const style = document.createElement('style');
-        style.textContent = cssText + '\n' + composedCssText;
-        this.shadowRoot.appendChild(style);
+        // Inject component-specific CSS if provided
+        if (componentCSS) {
+          const style = document.createElement('style');
+          style.textContent = componentCSS;
+          this.shadowRoot.appendChild(style);
+        }
       }
       if (!this._root) {
         this._root = createRoot(this.shadowRoot);

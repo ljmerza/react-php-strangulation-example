@@ -1,1 +1,0 @@
-import{j as r}from"../discover.js";import"./index-BbjoSW55.js";function i({title:a="",subtitle:e="",className:s=""}){return r.jsxs("div",{className:`card-header ${s}`,children:[a&&r.jsx("h3",{className:"card-title",children:a}),e&&r.jsx("p",{className:"card-subtitle",children:e})]})}export{i as default};

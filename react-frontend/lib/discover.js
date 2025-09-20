@@ -12,24 +12,24 @@ class ComponentDiscovery {
 
     // Set up registry event listeners
     this.registry.subscribe((event) => {
-      console.log(`[ComponentDiscovery] ${event.type}:`, event.data);
+      console.debug(`[ComponentDiscovery] ${event.type}:`, event.data);
     });
 
     try {
       // 1. Discover from manifest first (explicit definitions)
-      console.log('[ComponentDiscovery] Loading manifest...');
+      console.debug('[ComponentDiscovery] Loading manifest...');
       await this.registry.discoverFromManifest();
 
       // 2. Discover from filesystem (auto-detect)
-      console.log('[ComponentDiscovery] Discovering from filesystem...');
+      console.debug('[ComponentDiscovery] Discovering from filesystem...');
       await this.registry.discoverFromFiles();
 
       // 3. Check DOM for components that need loading
-      console.log('[ComponentDiscovery] Scanning DOM for components...');
+      console.debug('[ComponentDiscovery] Scanning DOM for components...');
       this.registry.discoverFromDOM();
 
       this.initialized = true;
-      console.log('[ComponentDiscovery] Initialization complete');
+      console.debug('[ComponentDiscovery] Initialization complete');
 
     } catch (error) {
       console.error('[ComponentDiscovery] Initialization failed:', error);
@@ -42,7 +42,7 @@ class ComponentDiscovery {
     const result = await this.registry.autoLoad();
 
     if (result.loaded.length > 0) {
-      console.log('[ComponentDiscovery] Auto-loaded components:', result.loaded);
+      console.debug('[ComponentDiscovery] Auto-loaded components:', result.loaded);
     }
 
     if (result.failed.length > 0) {
@@ -57,7 +57,7 @@ class ComponentDiscovery {
     await this.init();
     try {
       await this.registry.load(tagName);
-      console.log(`[ComponentDiscovery] Loaded component: ${tagName}`);
+      console.debug(`[ComponentDiscovery] Loaded component: ${tagName}`);
       return true;
     } catch (error) {
       console.error(`[ComponentDiscovery] Failed to load ${tagName}:`, error);
@@ -69,7 +69,7 @@ class ComponentDiscovery {
   async loadAll() {
     await this.init();
     const result = await this.registry.loadAll();
-    console.log('[ComponentDiscovery] Load all results:', result);
+    console.debug('[ComponentDiscovery] Load all results:', result);
     return result;
   }
 
@@ -139,7 +139,7 @@ class ComponentObserver {
       subtree: true
     });
 
-    console.log('[ComponentObserver] Started watching for new components');
+    console.debug('[ComponentObserver] Started watching for new components');
   }
 
   async processComponent(tagName) {
@@ -147,7 +147,7 @@ class ComponentObserver {
       // Check if component is in registry but not loaded
       const info = this.discovery.getComponentInfo(tagName);
       if (info && !info.loaded) {
-        console.log(`[ComponentObserver] Auto-loading detected component: ${tagName}`);
+        console.debug(`[ComponentObserver] Auto-loading detected component: ${tagName}`);
         await this.discovery.loadComponent(tagName);
       }
     } catch (error) {
@@ -161,7 +161,7 @@ class ComponentObserver {
     if (this.observer) {
       this.observer.disconnect();
       this.observer = null;
-      console.log('[ComponentObserver] Stopped watching');
+      console.debug('[ComponentObserver] Stopped watching');
     }
   }
 }
@@ -174,7 +174,7 @@ if (document.readyState === 'loading') {
 }
 
 async function initializeDiscovery() {
-  console.log('[ComponentDiscovery] Starting auto-discovery...');
+  console.debug('[ComponentDiscovery] Starting auto-discovery...');
 
   // Initialize discovery system
   await componentDiscovery.init();
@@ -189,10 +189,10 @@ async function initializeDiscovery() {
   // Make discovery available globally for debugging
   window.componentDiscovery = componentDiscovery;
 
-  console.log('[ComponentDiscovery] System ready. Available commands:');
-  console.log('- window.componentDiscovery.listAvailable()');
-  console.log('- window.componentDiscovery.getStats()');
-  console.log('- window.componentDiscovery.loadComponent(tagName)');
+  console.debug('[ComponentDiscovery] System ready. Available commands:');
+  console.debug('- window.componentDiscovery.listAvailable()');
+  console.debug('- window.componentDiscovery.getStats()');
+  console.debug('- window.componentDiscovery.loadComponent(tagName)');
 }
 
 export default componentDiscovery;

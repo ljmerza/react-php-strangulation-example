@@ -1,4 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import styles from './Hello.module.css';
+import cssText from './Hello.module.css?inline';
+
+// Export CSS for web component registration
+export const hellowidgetCSS = cssText;
 
 export default function Hello({ name = "World", onInputChange }) {
   const [value, setValue] = useState(name);
@@ -16,9 +21,9 @@ export default function Hello({ name = "World", onInputChange }) {
   };
 
   return (
-    <div className="hello-component">
-      <h3>Hello from React, {value}!</h3>
-      <input value={value} onChange={handleChange} />
+    <div className={styles.hello}>
+      <h3 className={styles.title}>Hello from React, {value}!</h3>
+      <input value={value} onChange={handleChange} className={styles.input} />
     </div>
   );
 }

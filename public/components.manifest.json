@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "components": {
     "hello-widget": {
-      "path": "./assets/Hello-DYRiL76P.js",
+      "path": "./assets/Hello-CSUZz2Fd.js",
       "version": "1.0.0",
       "dependencies": [
         "react",
@@ -16,7 +16,7 @@
       }
     },
     "card-widget": {
-      "path": "./assets/Card-BbH25olj.js",
+      "path": "./assets/Card-BS4T10YV.js",
       "version": "1.0.0",
       "dependencies": [
         "react",
@@ -31,7 +31,7 @@
       }
     },
     "cardheader-widget": {
-      "path": "./assets/CardHeader-BMUHTTTL.js",
+      "path": "./assets/CardHeader-BrOWkd34.js",
       "version": "1.0.0",
       "dependencies": [
         "react",
@@ -46,7 +46,7 @@
       }
     },
     "cardbody-widget": {
-      "path": "./assets/CardBody-tcp0ectU.js",
+      "path": "./assets/CardBody-DmOu9Vm-.js",
       "version": "1.0.0",
       "dependencies": [
         "react",
@@ -61,7 +61,7 @@
       }
     },
     "cardfooter-widget": {
-      "path": "./assets/CardFooter-Dv07Rvvc.js",
+      "path": "./assets/CardFooter-B76sexvq.js",
       "version": "1.0.0",
       "dependencies": [
         "react",
@@ -76,7 +76,7 @@
       }
     },
     "data-table": {
-      "path": "./assets/DataTable-B_K1FErB.js",
+      "path": "./assets/DataTable-DJsuq2Ju.js",
       "version": "1.0.0",
       "dependencies": [
         "react",

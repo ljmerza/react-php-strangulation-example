@@ -1,4 +1,9 @@
 import React from 'react';
+import styles from './CardHeader.module.css';
+import cssText from './CardHeader.module.css?inline';
+
+// Export CSS for web component registration
+export const cardheaderwidgetCSS = cssText;
 
 export default function CardHeader({
   title = '',
@@ -6,9 +11,9 @@ export default function CardHeader({
   className = ''
 }) {
   return (
-    <div className={`card-header ${className}`}>
-      {title && <h3 className="card-title">{title}</h3>}
-      {subtitle && <p className="card-subtitle">{subtitle}</p>}
+    <div className={`${styles.header} ${className}`}>
+      {title && <h3 className={styles.title}>{title}</h3>}
+      {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
     </div>
   );
 }
