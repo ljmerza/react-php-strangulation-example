@@ -1,6 +1,19 @@
-# React + PHP Strangulation Example
+# React Strangler
 
-This project demonstrates how to use **React** components (built as Web Components) inside legacy **PHP** pages with **intelligent component discovery** and **two-way data binding** for modern frontend strangulation.
+> A Vite plugin for gradually migrating legacy server-side frontends to React using the Strangler Fig pattern.
+
+## Overview
+
+React Strangler enables you to **gradually replace legacy frontend code** with modern React components without rewriting your entire application. Works with **any server-side framework** - PHP, Rails, Django, Laravel, Express, .NET, and more.
+
+Using the [Strangler Fig pattern](https://martinfowler.com/bliki/StranglerFigApplication.html), you can:
+
+- ✅ **Add React components to existing server-rendered pages** without touching legacy code
+- ✅ **Use composable component patterns** directly in server templates
+- ✅ **Individual HTML attributes** instead of complex JSON configurations
+- ✅ **Auto-discovery and lazy loading** - components load only when needed
+- ✅ **CSS encapsulation** - Scoped styles prevent conflicts with legacy CSS
+- ✅ **Zero configuration** - Convention over configuration approach
 
 ## ✨ Features
 
@@ -86,21 +99,90 @@ npm install
 npm run build
 ```
 
-### 2. Use in PHP (New Way)
-```html
+### 2. Use in Any Server Framework
+
+#### PHP
+```php
 <!DOCTYPE html>
 <html>
 <head>
-  <title>My PHP Page</title>
-  <!-- ONE script tag replaces all component imports -->
+  <title>Legacy PHP App</title>
   <script type="module" src="dist/discover.js"></script>
 </head>
 <body>
-  <!-- Components load automatically when found in DOM -->
-  <hello-widget data-props='{"name": "World"}'></hello-widget>
-  <parent-widget></parent-widget>
+  <usercard-widget
+    name="<?= $user['name'] ?>"
+    email="<?= $user['email'] ?>">
+  </usercard-widget>
 </body>
 </html>
+```
+
+#### Ruby on Rails
+```erb
+<!-- app/views/users/show.html.erb -->
+<%= javascript_include_tag "dist/discover.js", type: "module" %>
+
+<usercard-widget
+  name="<%= @user.name %>"
+  email="<%= @user.email %>">
+</usercard-widget>
+```
+
+#### Django
+```html
+<!-- templates/user_profile.html -->
+{% load static %}
+<script type="module" src="{% static 'dist/discover.js' %}"></script>
+
+<usercard-widget
+  name="{{ user.name }}"
+  email="{{ user.email }}">
+</usercard-widget>
+```
+
+#### Laravel Blade
+```php
+<!-- resources/views/user/profile.blade.php -->
+<script type="module" src="{{ asset('dist/discover.js') }}"></script>
+
+<usercard-widget
+  name="{{ $user->name }}"
+  email="{{ $user->email }}">
+</usercard-widget>
+```
+
+#### Express + EJS
+```html
+<!-- views/user-profile.ejs -->
+<script type="module" src="/dist/discover.js"></script>
+
+<usercard-widget
+  name="<%= user.name %>"
+  email="<%= user.email %>">
+</usercard-widget>
+```
+
+#### ASP.NET Razor
+```html
+<!-- Views/User/Profile.cshtml -->
+<script type="module" src="~/dist/discover.js"></script>
+
+<usercard-widget
+  name="@Model.Name"
+  email="@Model.Email">
+</usercard-widget>
+```
+
+#### Symfony Twig
+```twig
+{# templates/user/profile.html.twig #}
+<script type="module" src="{{ asset('dist/discover.js') }}"></script>
+
+<usercard-widget
+  name="{{ user.name }}"
+  email="{{ user.email }}">
+</usercard-widget>
 ```
 
 ### 3. Performance Benefits
@@ -109,6 +191,23 @@ npm run build
 - ✅ **Dynamic loading** - add components with JavaScript, they auto-load
 - ✅ **Bundle splitting** - optimal performance for every page
 - ✅ **Debug tools** - `window.componentDiscovery` available in browser console
+
+## 🌐 Framework Support
+
+Works with **any server-side framework** that renders HTML:
+
+| Framework | Template Engine | Status | Example |
+|-----------|----------------|--------|---------|
+| **PHP** | Native/Twig/Blade | ✅ Full | `name="<?= $user['name'] ?>"` |
+| **Ruby on Rails** | ERB/Haml | ✅ Full | `name="<%= @user.name %>"` |
+| **Django** | Django Templates | ✅ Full | `name="{{ user.name }}"` |
+| **Laravel** | Blade | ✅ Full | `name="{{ $user->name }}"` |
+| **Express** | EJS/Handlebars | ✅ Full | `name="<%= user.name %>"` |
+| **ASP.NET** | Razor | ✅ Full | `name="@Model.Name"` |
+| **Spring Boot** | Thymeleaf | ✅ Full | `name="${user.name}"` |
+| **Symfony** | Twig | ✅ Full | `name="{{ user.name }}"` |
+
+**The pattern is universal** - just include the discovery script and use web components in your templates!
 
 ## 📊 Performance Comparison
 
